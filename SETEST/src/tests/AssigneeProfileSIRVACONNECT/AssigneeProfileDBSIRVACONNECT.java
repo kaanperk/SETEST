@@ -86,12 +86,19 @@ public class AssigneeProfileDBSIRVACONNECT {
 		LoginPage.passwd(driver).sendKeys("Dec321@@");
 		LoginPage.login(driver);
 	    WebDriverWait wait = new WebDriverWait(driver,3);
-	    driver.manage().timeouts().implicitlyWait(40,TimeUnit.SECONDS);    
+	    Thread.sleep(5000);
+	    driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);    
+	    if
+		  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+		  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
+	    
+	    Thread.sleep(1500);
+	    
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
 	    SearchPage.AsgneFldrClick(driver); 
-	    Thread.sleep(3000);
-	    driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS); 
+	    Thread.sleep(2000);
+	    driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS); 
         driver.switchTo().parentFrame();
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
@@ -137,15 +144,13 @@ public class AssigneeProfileDBSIRVACONNECT {
 			       Thread.sleep(1000);
 			   
 			       NewAssignee.NextButtonClick(driver);
-			       Thread.sleep(3000);
 			       driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			      
-			       driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS); 
+			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS); 
 			       driver.switchTo().parentFrame();
 			       driver.switchTo().parentFrame();
 			       driver.switchTo().parentFrame();
@@ -195,7 +200,7 @@ public class AssigneeProfileDBSIRVACONNECT {
 			       Select s = new Select(driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']")));
 					 List<WebElement> dd_options= s.getOptions();
 					 int i =1;
-					 System.out.println("Generic Profile");
+					 System.out.println("Deutsche Bank Profile");
 					 for (WebElement e:dd_options) {
 						 System.out.println(i+ " - "+e.getText());
 						 i++;
@@ -209,6 +214,8 @@ public class AssigneeProfileDBSIRVACONNECT {
 			     
 			         NewAssignee.SaveClick(driver);
 			         Thread.sleep(2000);
+			         
+			         
 					  if (isAlertPresent()) {
 					  driver.switchTo().alert().accept(); 
 					  driver.switchTo().parentFrame(); 
@@ -222,14 +229,13 @@ public class AssigneeProfileDBSIRVACONNECT {
 					  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 				       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-					  Thread.sleep(3000);
-					  (new WebDriverWait(driver, 2))
+					 Thread.sleep(2000);
+				       (new WebDriverWait(driver, 2))
 					  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
 					  driver.switchTo().defaultContent();
 				   		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 				         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
 				         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-				   		  Thread.sleep(8000);
 				   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 				   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Assignee Types')]")));
 				   		Thread.sleep(1500);
@@ -239,19 +245,13 @@ public class AssigneeProfileDBSIRVACONNECT {
 				        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
 				        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 				   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-				   		  Thread.sleep(3000);
-				   		  (new WebDriverWait(driver, 2))
+				   		  Thread.sleep(2000);
+				   		  (new WebDriverWait(driver, 3))
 				   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-				   		  driver.switchTo().defaultContent();
-				   		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-				         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-				         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-				   		  Thread.sleep(3000);
-				   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-				   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Assignee Types')]")));
-				   		Thread.sleep(1500);
-				   		takeScreenshot(driver,"1.DB New Profile Completed");
 					  }
+					    
+					  takeScreenshot(driver,"1. DB Profile Completed");
+					  
 					  driver.switchTo().defaultContent();
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));

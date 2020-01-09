@@ -193,7 +193,7 @@ public class AssigneeProfileBKCSIRVACONNECT {
 			   	 Select s = new Select(driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']")));
 				 List<WebElement> dd_options= s.getOptions();
 				 int i =1;
-				 System.out.println("AMGEN Profile");
+				 System.out.println("BKC Profile");
 				 for (WebElement e:dd_options) {
 					 System.out.println(i+ " - "+e.getText());
 					 i++;

@@ -160,22 +160,21 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 			         driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 				     Thread.sleep(2000);
 			    
-			       NewAssignee.AsgneTypeClick(driver);
-			         driver.switchTo().parentFrame();
-			         driver.switchTo().parentFrame();
-			         driver.switchTo().parentFrame();
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
-			       NewAssignee.AsgneSel1Click(driver); 
-			       Thread.sleep(1000);
-			    
-			       NewAssignee.OKClick(driver);
-			       Thread.sleep(1500);
-			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-			     
-			         driver.switchTo().parentFrame();
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
+		/*
+		 * NewAssignee.AsgneTypeClick(driver); driver.switchTo().parentFrame();
+		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
+		 * "did_dmode_frame_1")); NewAssignee.AsgneSel1Click(driver);
+		 * Thread.sleep(1000);
+		 * 
+		 * NewAssignee.OKClick(driver); Thread.sleep(1500);
+		 * driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+		 * 
+		 * driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
+		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		 */
 			    
 			        NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
 			        NewAssignee.custpreffname(driver).sendKeys("kaan");
@@ -188,7 +187,6 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 			       NewAssignee.custaddr1(driver).sendKeys("321 test ave");
 			       NewAssignee.custprefcity(driver).sendKeys("Chicago");
 			       NewAssignee.zip(driver).sendKeys("60601");
-			       takeScreenshot(driver,"5.Apple New Assignee");
 			       NewAssignee.highlevelsob(driver).selectByIndex(1);
 			       NewAssignee.sublob(driver).selectByIndex(1);
 			       driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
@@ -225,25 +223,47 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 			         driver.switchTo().parentFrame();
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
-			     
-			         
-			         
-			     
-			         
+    
        NewAssignee.SaveClick(driver);
 
-       
-       driver.switchTo().parentFrame();
-       driver.switchTo().parentFrame();
-	         if (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
-	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();	 
-	         }
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-		       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-			  Thread.sleep(10000);
-			  (new WebDriverWait(driver, 3))
-			  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-			  Thread.sleep(3000);
+       Thread.sleep(2000);
+		 
+		  if (isAlertPresent()) {
+		  driver.switchTo().alert().accept(); 
+		  driver.switchTo().parentFrame(); 
+		  driver.switchTo().parentFrame();
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+		  Thread.sleep(2000);
+		  driver.switchTo().parentFrame(); 
+		  driver.switchTo().parentFrame();
+		  driver.switchTo().parentFrame(); 
+		  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+		  Thread.sleep(3000);
+		  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		  (new WebDriverWait(driver, 3))
+		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+		  } 
+		  else {
+			     driver.switchTo().defaultContent();
+	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
+	        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+	   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+	   		  Thread.sleep(5000);
+	   		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	   		  (new WebDriverWait(driver, 3))
+	   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+		  }
+		    
+		
+	 
+		  driver.switchTo().defaultContent();
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Assignee Types')]")));
 			  takeScreenshot(driver,"1.APPLE Profile Completed");
 			  
 		  driver.switchTo().defaultContent();
@@ -268,8 +288,8 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 		  
 		  Alert alert = driver.switchTo().alert();
 		  alert.accept();
-		  	    
-		  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+		  Thread.sleep(5000);	    
+		  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 		  
 		  driver.switchTo().parentFrame();
 		  driver.switchTo().parentFrame();
@@ -338,8 +358,8 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 			  Thread.sleep(1000);  
 			  
 			  alert.accept();
-			  Thread.sleep(1500);
-			  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			  Thread.sleep(5000);	    
+			  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 			  
 			  driver.switchTo().parentFrame();
 			  driver.switchTo().parentFrame();
@@ -414,8 +434,8 @@ public class AssigneeProfileAPPLESIRVACONNECT{
 				  Thread.sleep(1500);  
 				  
 				  alert.accept();
-				  Thread.sleep(1500);
-				  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+				  Thread.sleep(5000);	    
+				  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 				  
 				  driver.switchTo().parentFrame();
 				  driver.switchTo().parentFrame();

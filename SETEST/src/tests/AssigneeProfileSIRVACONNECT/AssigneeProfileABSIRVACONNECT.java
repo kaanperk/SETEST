@@ -151,18 +151,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
 			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
 
-			NewAssignee.AsgneTypeClick(driver);
-			driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-			driver.switchTo().parentFrame();
-			driver.switchTo().parentFrame();
-			driver.switchTo().parentFrame();
-			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1"));
-			NewAssignee.AsgneSel1Click(driver);
-			NewAssignee.OKClick(driver);
-			driver.switchTo().parentFrame();
-			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
-			wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		/*
+		 * NewAssignee.AsgneTypeClick(driver);
+		 * driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
+		 * driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
+		 * "did_dmode_frame_1")); NewAssignee.AsgneSel1Click(driver);
+		 * NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
+		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		 */
 			NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
 			NewAssignee.custpreffname(driver).sendKeys("kaan");
 			NewAssignee.custpreflname(driver).sendKeys("test");

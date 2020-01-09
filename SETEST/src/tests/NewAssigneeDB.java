@@ -82,7 +82,13 @@ public class NewAssigneeDB {
 		LoginPage.passwd(driver).sendKeys("Dec321@@");
 		LoginPage.login(driver);
 	    WebDriverWait wait = new WebDriverWait(driver,3);
-	    driver.manage().timeouts().implicitlyWait(40,TimeUnit.SECONDS);    
+	    Thread.sleep(5000);
+	    driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);  
+	    if
+		  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+		  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
+	    
+	    
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
 	    takeScreenshot(driver,"1. Homepage");	

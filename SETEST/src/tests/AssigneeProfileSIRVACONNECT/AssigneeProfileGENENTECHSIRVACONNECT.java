@@ -93,7 +93,7 @@ public class AssigneeProfileGENENTECHSIRVACONNECT {
 		 
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
-		takeScreenshot(driver, "1.Homepage");
+		
 		SearchPage.AsgneFldrClick(driver);
 		Thread.sleep(3000);
 		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
@@ -140,7 +140,7 @@ public class AssigneeProfileGENENTECHSIRVACONNECT {
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
 		NewAssignee.programdropdown(driver).selectByIndex(1);
 		Thread.sleep(1000);
-		takeScreenshot(driver, "2.Genentech New Assignee Profile");
+		
 		NewAssignee.NextButtonClick(driver);
 		driver.switchTo().parentFrame();
 		driver.switchTo().parentFrame();
@@ -378,7 +378,7 @@ public class AssigneeProfileGENENTECHSIRVACONNECT {
 		 Select s = new Select(driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']")));
 		 List<WebElement> dd_options= s.getOptions();
 		 int i =1;
-		 System.out.println("Generic Profile");
+		 System.out.println("GENENTECH PROFILE");
 		 for (WebElement e:dd_options) {
 			 System.out.println(i+ " - "+e.getText());
 			 i++;

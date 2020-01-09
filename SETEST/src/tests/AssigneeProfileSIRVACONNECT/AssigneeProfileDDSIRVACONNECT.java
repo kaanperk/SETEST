@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import page.classes.LoginPage;
@@ -50,7 +51,7 @@ public class AssigneeProfileDDSIRVACONNECT {
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(source, new File("./Screenshots/SIRVACONNECT-DB/" + screenshotname + ".png"));
+			FileUtils.copyFile(source, new File("./Screenshots/SIRVACONNECT-DIRECT DELIVERY/" + screenshotname + ".png"));
 		} catch (Exception e) {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
@@ -87,6 +88,11 @@ public class AssigneeProfileDDSIRVACONNECT {
 	    WebDriverWait wait = new WebDriverWait(driver,3);
 	    Thread.sleep(23000);
 		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+
+		  if
+		  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+		  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
+		
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
 	
@@ -167,7 +173,7 @@ public class AssigneeProfileDDSIRVACONNECT {
 		  NewAssignee.phne1country(driver).sendKeys("+1");
 		  NewAssignee.phne1areacode(driver).sendKeys("312");
 		  NewAssignee.phne1nbr(driver).sendKeys("4567890");
-		  NewAssignee.phnetype2dropdown(driver).selectByIndex(2);
+		/* NewAssignee.phnetype2dropdown(driver).selectByIndex(2); */
 		  Thread.sleep(1000);
 		
 		/*
@@ -211,6 +217,7 @@ public class AssigneeProfileDDSIRVACONNECT {
 
 		 
 		  
+		
 		/*
 		 * NewAssignee.citizenshipcountry(driver).selectByVisibleText("United States");
 		 * NewAssignee.dualcitizenshipcountry(driver).selectByVisibleText("Germany");
@@ -222,9 +229,11 @@ public class AssigneeProfileDDSIRVACONNECT {
 		 * NewAssignee.birthcountry(driver).selectByVisibleText("United States");
 		 * NewAssignee.birthstate(driver).selectByVisibleText("Illinois");
 		 * NewAssignee.birthcity(driver).sendKeys("Chicago");
-		 * 
-		 * 
-		 * NewAssignee.familysizeonasgnmt(driver).sendKeys("4");
+		 */
+		  
+		  
+		 NewAssignee.familysizeonasgnmt(driver).sendKeys("4");
+		/*
 		 * NewAssignee.familysize(driver).sendKeys("5");
 		 * NewAssignee.accompdependents(driver).sendKeys("2");
 		 * NewAssignee.SplitfamilyN(driver);
@@ -282,8 +291,7 @@ public class AssigneeProfileDDSIRVACONNECT {
 		 * NewAssignee.employeeid(driver).sendKeys("112233");
 		 */
 		  Thread.sleep(1000);
-		  takeScreenshot(driver,"5.DD New Assignee Profile");
-		  
+		
 		  
 		/*
 		 * NewAssignee.newmanager(driver).sendKeys("Sam Adams");
@@ -410,6 +418,16 @@ public class AssigneeProfileDDSIRVACONNECT {
 		  NewAssignee.centerofexcellence(driver).selectByIndex(1);
 		  Thread.sleep(1000);
 		
+			 Select s = new Select(driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']")));
+			 List<WebElement> dd_options= s.getOptions();
+			 int i =1;
+			 System.out.println("Generic Profile");
+			 for (WebElement e:dd_options) {
+				 System.out.println(i+ " - "+e.getText());
+				 i++;
+			 }
+			 System.out.println("");
+		  
 		  
 		/*
 		 * NewAssignee.initialcontactdate(driver).sendKeys("10/15/2019");
@@ -428,55 +446,44 @@ public class AssigneeProfileDDSIRVACONNECT {
 		  
 		  NewAssignee.SaveClick(driver);
 		  Thread.sleep(2000);
+		 
 		  if (isAlertPresent()) {
-		  driver.switchTo().alert().accept(); 
-		  driver.switchTo().parentFrame(); 
-		  driver.switchTo().parentFrame();
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
-		  Thread.sleep(2000);
-		  driver.switchTo().parentFrame(); 
-		  driver.switchTo().parentFrame();
-		  driver.switchTo().parentFrame(); 
-		  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-		  Thread.sleep(8000);
-		  (new WebDriverWait(driver, 2))
-		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-		  driver.switchTo().defaultContent();
-	   		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-	   		  Thread.sleep(8000);
-	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Employee Types')]")));
-	   		Thread.sleep(1500);
-	   		takeScreenshot(driver,"1.DD Profile Completed");
-		  } else {
-			     driver.switchTo().defaultContent();
-	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
-	        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-	   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-	   		  Thread.sleep(10000);
-	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	   		  (new WebDriverWait(driver, 2))
-	   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-	   		  driver.switchTo().defaultContent();
-	   		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-	   		  Thread.sleep(8000);
-	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Employee Types')]")));
-	   		Thread.sleep(1500);
-	   		takeScreenshot(driver,"1.DD Profile Completed");
-		  }
+			  driver.switchTo().alert().accept(); 
+			  driver.switchTo().parentFrame(); 
+			  driver.switchTo().parentFrame();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+			  Thread.sleep(2000);
+			  driver.switchTo().parentFrame(); 
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame(); 
+			  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+			  Thread.sleep(2000);
+			  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			  (new WebDriverWait(driver, 3))
+			  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+			  } 
+			  else {
+				     driver.switchTo().defaultContent();
+		        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
+		        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+		   		  Thread.sleep(2000);
+		   		  (new WebDriverWait(driver, 3))
+		   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+			  }
+		  
+		  
+		  
 		  driver.switchTo().defaultContent();
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
-		 
+		 Thread.sleep(2000);
+		  takeScreenshot(driver,"1. DD Profile Completed");
+		  
 		  WebElement element7 = driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']"));
 		  Actions actions7 = new Actions(driver); 
 		  actions7.moveToElement(element7);
@@ -495,7 +502,8 @@ public class AssigneeProfileDDSIRVACONNECT {
 		  Alert alert = driver.switchTo().alert();
 		  alert.accept();
 		  	    
-		  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+		  Thread.sleep(5000);
+		  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 		  
 		  driver.switchTo().parentFrame();
 		  driver.switchTo().parentFrame();
@@ -564,8 +572,8 @@ public class AssigneeProfileDDSIRVACONNECT {
 			  Thread.sleep(1000);  
 			  
 			  alert.accept();
-			  Thread.sleep(1500);
-			  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			  Thread.sleep(5000);
+			  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 			  
 			  driver.switchTo().parentFrame();
 			  driver.switchTo().parentFrame();
@@ -640,8 +648,8 @@ public class AssigneeProfileDDSIRVACONNECT {
 				  Thread.sleep(1500);  
 				  
 				  alert.accept();
-				  Thread.sleep(1500);
-				  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+				  Thread.sleep(5000);
+				  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 				  
 				  driver.switchTo().parentFrame();
 				  driver.switchTo().parentFrame();
