@@ -87,6 +87,10 @@ public class AddPaymentTest {
  WebDriverWait wait = new WebDriverWait(driver,3);
  Thread.sleep(25000);
 	driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+	
+	  if
+	  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+	  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
  
 	  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"did_appframe\"]")));
 	      wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));

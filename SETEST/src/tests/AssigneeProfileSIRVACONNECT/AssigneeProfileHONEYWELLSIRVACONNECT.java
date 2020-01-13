@@ -2,7 +2,10 @@ package tests.AssigneeProfileSIRVACONNECT;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -17,6 +20,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -29,7 +34,7 @@ import page.classes.NewAssignee;
 
 public class AssigneeProfileHONEYWELLSIRVACONNECT {
 	private WebDriver driver;
-	private String baseUrl;
+	public static Properties prop;
 
 	public static WebElement waitForElementToBeVisible(WebDriver driver, WebElement webElement, int seconds) {
 		WebDriverWait wait = new WebDriverWait(driver, seconds);
@@ -57,45 +62,84 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 		}
 	}
 
-	@Before
-	public void setup() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
-		driver = new ChromeDriver();
-		baseUrl = "https://setstgen.sirvarelocation.com";
-		driver.manage().window().maximize();
+	public boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} // try
+		catch (Exception e) {
+			return false;
+		} // catch
 	}
-	
-	
-	  public boolean isAlertPresent() {
-			 try {
-			 driver.switchTo().alert();
-			 return true;
-			 }// try
-			 catch (Exception e) {
-			 return false;
-			 }// catch
-			 }
+
+	public void initialization() throws InterruptedException {
+		try {
+			prop = new Properties();
+			FileInputStream ip=new FileInputStream("/Users/avl7353/git/SETEST/SETEST/src/page/classes/config.properties");
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String browsername = prop.getProperty("browser");
+		if (browsername.contentEquals("chrome")) {
+			// System.setProperty("webdriver.chrome.driver","C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
+			
+			System.setProperty("webdriver.chrome.driver",
+					prop.getProperty("chromedriverpath"));
+
+			driver = new ChromeDriver();
+		} else if (browsername.contentEquals("ff")) {
+			System.setProperty("webdriver.gecko.driver", prop.getProperty("firefoxdriverpath"));
+			driver = new FirefoxDriver();
+		} else if (browsername.contentEquals("IE")) {
+		//	System.setProperty("webdriver.ie.driver", "C:\\Users\\avl7353\\eclipse-workspace\\IEDriverServer.exe");
+		//	driver = new InternetExplorerDriver();
+			
+			//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
+			System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
+			driver = new InternetExplorerDriver();
+		
+		}  		
+		
+		driver.manage().window().maximize();
+		// driver.manage().deleteAllCookies();
+//		    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+		// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get(prop.getProperty("url"));
+		Thread.sleep(1000);
+		LoginPage.userid(driver).clear();
+		LoginPage.passwd(driver).clear();
+	//	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
 			
 		@Test	
 	 public void test() throws Exception {	
-		driver.get(baseUrl);
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-		/**LOGIN **/
-		LoginPage.userid(driver).sendKeys("kaan.perk@sirva.com");
-		LoginPage.passwd(driver).sendKeys("Dec321@@");
-		LoginPage.login(driver);
-	    WebDriverWait wait = new WebDriverWait(driver,3);
-	    Thread.sleep(23000);
-		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-    
-		  if
-		  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
-		  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
+			initialization();
+
+			LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
+			LoginPage.userid(driver).sendKeys(Keys.TAB);
+			LoginPage.passwd(driver).clear();
+			LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
+			LoginPage.passwd(driver).sendKeys(Keys.TAB);
+			LoginPage.loginbutton(driver).click();
+
+			WebDriverWait wait = new WebDriverWait(driver, 3);
+			Thread.sleep(20000);
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+			
+			  if
+			  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+			  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
 		 
 		
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
-	    takeScreenshot(driver,"1.Homepage");	
+
 	    SearchPage.AsgneFldrClick(driver); 
 	    Thread.sleep(3000);
 	    driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
@@ -142,7 +186,7 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
 			       NewAssignee.programdropdown(driver).selectByIndex(1);
 			       Thread.sleep(1000);
-			       takeScreenshot(driver,"2.Honeywell New Assignee Profile");
+			      
 			       NewAssignee.NextButtonClick(driver);
 			       Thread.sleep(1000);
 			       driver.switchTo().parentFrame();
@@ -154,7 +198,7 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 			    
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			     
-			         takeScreenshot(driver,"3.Honeywell New Assignee Profile");
+			       
 		
 			         NewAssignee.employeeid(driver).sendKeys("1234567");
 			         NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
@@ -163,16 +207,16 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 			         NewAssignee.MC(driver).selectByIndex(1);
 			         NewAssignee.opsmgr(driver).selectByIndex(1);
 			         Thread.sleep(1500);
-			         NewAssignee.AssigneetypeHONClick(driver);
-					  driver.switchTo().parentFrame();
-					  driver.switchTo().parentFrame(); 
-					  driver.switchTo().parentFrame();
-					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
-					  NewAssignee.AsgneSel1Click(driver);
-					  NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
-					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
-					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		/*
+		 * NewAssignee.AssigneetypeHONClick(driver); driver.switchTo().parentFrame();
+		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
+		 * "did_dmode_frame_1")); NewAssignee.AsgneSel1Click(driver);
+		 * NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
+		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		 */
 			         
 		
 		  NewAssignee.custminame(driver).sendKeys("middle");
@@ -276,7 +320,7 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 			  NewAssignee.custaddr2(driver).sendKeys("addr2 test");
 			  NewAssignee.custprefcity(driver).sendKeys("Chicago");
 			  NewAssignee.zip(driver).sendKeys("60601"); 
-			  takeScreenshot(driver,"4.Honeywell New Assignee Profile");
+		
 			  
 
 		//	  NewAssignee.specialneeds(driver).sendKeys("Special Needs");
@@ -376,7 +420,6 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 			 System.out.println("");
 			 
 	    
-		  
 		 
 
 		  driver.switchTo().parentFrame(); 
@@ -411,7 +454,7 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'javascript:popup_custom_SIRVA')]")));
 	   		Thread.sleep(1500);
-	   	 takeScreenshot(driver,"5.Honeywell Profile Completed");
+	   	
 		  } else {
 			     driver.switchTo().defaultContent();
 	        //	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
@@ -428,7 +471,7 @@ public class AssigneeProfileHONEYWELLSIRVACONNECT {
 	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'javascript:popup_custom_SIRVA')]")));
 	   		Thread.sleep(1500);
-	   		takeScreenshot(driver,"5.Honeywell Profile Completed");
+	   		takeScreenshot(driver,"1.Honeywell Profile Completed");
 		  }  
 		  driver.switchTo().defaultContent();
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
