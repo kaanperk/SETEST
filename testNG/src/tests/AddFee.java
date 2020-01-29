@@ -1,10 +1,13 @@
 package tests;
 
+import org.testng.annotations.Test;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -12,19 +15,20 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-
 import page.classes.ExistingAssignee;
 import page.classes.Fees;
 import page.classes.LoginPage;
 import page.classes.SearchPage;
 
+
 public class AddFee {
 	private WebDriver driver;
-	private String baseUrl;
+	public static Properties prop;
 
 	public static WebElement waitForElementToBeVisible(WebDriver driver, WebElement webElement, int seconds) {
 		WebDriverWait wait = new WebDriverWait(driver, seconds);
@@ -50,44 +54,78 @@ public class AddFee {
 		} catch (Exception e) {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
+	} 
+	public boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} // try
+		catch (Exception e) {
+			return false;
+		} // catch
 	}
 
-	@BeforeMethod
-	public void setup() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
-		driver = new ChromeDriver();
-		baseUrl = "https://setstgen.sirvarelocation.com";
+	public void initialization() throws InterruptedException {
+		try {
+			prop = new Properties();
+			FileInputStream ip=new FileInputStream("/Users/avl7353/eclipse-workspace/Automation/src/page/classes/config.properties");
+			
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String browsername = prop.getProperty("browser");
+		if (browsername.contentEquals("chrome")) {
+			// System.setProperty("webdriver.chrome.driver","C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
+			
+			System.setProperty("webdriver.chrome.driver",
+					prop.getProperty("chromedriverpath"));
+
+			driver = new ChromeDriver();
+		} else if (browsername.contentEquals("ff")) {
+			System.setProperty("webdriver.gecko.driver", prop.getProperty("firefoxdriverpath"));
+			driver = new FirefoxDriver();
+		} else if (browsername.contentEquals("IE")) {
+		//	System.setProperty("webdriver.ie.driver", "C:\\Users\\avl7353\\eclipse-workspace\\IEDriverServer.exe");
+		//	driver = new InternetExplorerDriver();
+			
+			//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
+			System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
+			driver = new InternetExplorerDriver();
+		
+		}  		
+		
 		driver.manage().window().maximize();
-
+		// driver.manage().deleteAllCookies();
+//		    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+		// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get(prop.getProperty("url"));
+		Thread.sleep(1000);
+		LoginPage.userid(driver).clear();
+		LoginPage.passwd(driver).clear();
+	//	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 	
-	
-	  public boolean isAlertPresent() {
-			 try {
-			 driver.switchTo().alert();
-			 return true;
-			 }// try
-			 catch (Exception e) {
-			 return false;
-			 }// catch
-			 }
 
 	@Test	
  public void test() throws Exception {	
-	driver.get(baseUrl);
-	Thread.sleep(2000);
-    driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-	/**LOGIN **/
-	LoginPage.userid(driver).sendKeys("kaan.perk@sirva.com");
-	LoginPage.passwd(driver).sendKeys("Nov321@@");
-	LoginPage.login(driver);
- WebDriverWait wait = new WebDriverWait(driver,3);
- Thread.sleep(35000);
-	driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+		initialization();
+
+		LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
+		LoginPage.userid(driver).sendKeys(Keys.TAB);
+		LoginPage.passwd(driver).clear();
+		LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
+		LoginPage.passwd(driver).sendKeys(Keys.TAB);
+		LoginPage.loginbutton(driver).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 3);
+		Thread.sleep(20000);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		
-		  if
-		  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
-		  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
 		 
 	  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"did_appframe\"]")));
 	      wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
@@ -99,6 +137,7 @@ public class AddFee {
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		
 	 /**SEARCH ASSIGNEE**/	  
 		  SearchPage.statusACTIVE(driver); 
 		  SearchPage.AdvancedSearchClick(driver);
@@ -115,14 +154,14 @@ public class AddFee {
 		  takeScreenshot(driver,"3.Search results");	
 		  driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		  driver.findElement(By.xpath("//*[@id=\"did_results\"]/form/table/tbody/tr[2]/td[1]/a")).click();
-		  driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+		  Thread.sleep(5000);
+		  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 	/**ASSIGNEE PROFILE**/	  
-		  	
-		  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+
           if (isAlertPresent()) {
  			 driver.switchTo().alert().accept();
  			 }
-          Thread.sleep(2000);
+          Thread.sleep(3000);
 		  driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
 	      driver.switchTo().defaultContent();
 	  	(new WebDriverWait(driver, 2))
@@ -177,7 +216,7 @@ public class AddFee {
 	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 	          wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
 	          wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-	       Thread.sleep(5000);
+	       Thread.sleep(8000);
 	       takeScreenshot(driver,"6.Fee Posted");	
 	         
 	}
@@ -185,7 +224,9 @@ public class AddFee {
 
 	@AfterMethod
 	public void teardown() throws Exception {
-		 //driver.quit();
+		 driver.quit();
 	}
+
+
 
 }

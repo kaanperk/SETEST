@@ -1,13 +1,15 @@
 package tests;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -15,6 +17,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,7 +30,7 @@ import page.classes.NewAssignee;
 
 public class NewAssigneeHoneywell {
 	private WebDriver driver;
-	private String baseUrl;
+	public static Properties prop;
 
 	public static WebElement waitForElementToBeVisible(WebDriver driver, WebElement webElement, int seconds) {
 		WebDriverWait wait = new WebDriverWait(driver, seconds);
@@ -53,36 +57,79 @@ public class NewAssigneeHoneywell {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
 	}
-
-	@Before
-	public void setup() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
-		driver = new ChromeDriver();
-		baseUrl = "https://setstgen.sirvarelocation.com";
-		driver.manage().window().maximize();
+	public boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} // try
+		catch (Exception e) {
+			return false;
+		} // catch
 	}
-	
-	
-	  public boolean isAlertPresent() {
-			 try {
-			 driver.switchTo().alert();
-			 return true;
-			 }// try
-			 catch (Exception e) {
-			 return false;
-			 }// catch
-			 }
+
+	public void initialization() throws InterruptedException {
+		try {
+			prop = new Properties();
+			FileInputStream ip=new FileInputStream("/Users/avl7353/eclipse-workspace/Automation/src/page/classes/config.properties");
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String browsername = prop.getProperty("browser");
+		if (browsername.contentEquals("chrome")) {
+			// System.setProperty("webdriver.chrome.driver","C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
+			
+			System.setProperty("webdriver.chrome.driver",
+					prop.getProperty("chromedriverpath"));
+
+			driver = new ChromeDriver();
+		} else if (browsername.contentEquals("ff")) {
+			System.setProperty("webdriver.gecko.driver", prop.getProperty("firefoxdriverpath"));
+			driver = new FirefoxDriver();
+		} else if (browsername.contentEquals("IE")) {
+		//	System.setProperty("webdriver.ie.driver", "C:\\Users\\avl7353\\eclipse-workspace\\IEDriverServer.exe");
+		//	driver = new InternetExplorerDriver();
+			
+			//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
+			System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
+			driver = new InternetExplorerDriver();
+		
+		}  		
+		
+		driver.manage().window().maximize();
+		// driver.manage().deleteAllCookies();
+//		    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+		// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get(prop.getProperty("url"));
+		Thread.sleep(1000);
+		LoginPage.userid(driver).clear();
+		LoginPage.passwd(driver).clear();
+	//	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
 			
 		@Test	
 	 public void test() throws Exception {	
-		driver.get(baseUrl);
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-		/**LOGIN **/
-		LoginPage.userid(driver).sendKeys("kaan.perk@sirva.com");
-		LoginPage.passwd(driver).sendKeys("Nov321@@");
-		LoginPage.login(driver);
-	    WebDriverWait wait = new WebDriverWait(driver,3);
-		   driver.manage().timeouts().implicitlyWait(45,TimeUnit.SECONDS);
+			initialization();
+
+			LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
+			LoginPage.userid(driver).sendKeys(Keys.TAB);
+			LoginPage.passwd(driver).clear();
+			LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
+			LoginPage.passwd(driver).sendKeys(Keys.TAB);
+			LoginPage.loginbutton(driver).click();
+
+			WebDriverWait wait = new WebDriverWait(driver, 3);
+			Thread.sleep(20000);
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+			
+			  if
+			  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+			  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
     
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
@@ -135,7 +182,7 @@ public class NewAssigneeHoneywell {
 			       Thread.sleep(1000);
 			       takeScreenshot(driver,"2.Honeywell New Assignee Profile");
 			       NewAssignee.NextButtonClick(driver);
-			       Thread.sleep(2000);
+			       Thread.sleep(1000);
 			       driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
@@ -144,12 +191,7 @@ public class NewAssigneeHoneywell {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
 			    
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-			       driver.switchTo().parentFrame();
-			       driver.switchTo().parentFrame();
-			       driver.switchTo().parentFrame();
-			       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
+			     
 			         takeScreenshot(driver,"3.Honeywell New Assignee Profile");
 		
 			         NewAssignee.employeeid(driver).sendKeys("1234567");
@@ -165,6 +207,7 @@ public class NewAssigneeHoneywell {
 					  driver.switchTo().parentFrame();
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
 					  NewAssignee.AsgneSel1Click(driver);
+					  Thread.sleep(1000);
 					  NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
@@ -371,7 +414,7 @@ public class NewAssigneeHoneywell {
 		
 		  NewAssignee.wtid(driver).sendKeys("222333");
 		
-		  NewAssignee.surveydate(driver).sendKeys("12/15/2019");
+		//  NewAssignee.surveydate(driver).sendKeys("02/15/2019");
 		  NewAssignee.surveydate(driver).sendKeys(Keys.ESCAPE);
 		  
 		 
@@ -411,7 +454,7 @@ public class NewAssigneeHoneywell {
 	   	 takeScreenshot(driver,"5.Honeywell Profile Completed");
 		  } else {
 			     driver.switchTo().defaultContent();
-	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
+	        //	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
 	        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 	   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
 	   		  Thread.sleep(8000);

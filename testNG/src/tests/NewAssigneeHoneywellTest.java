@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 
 
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,13 +27,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 import page.classes.LoginPage;
 import page.classes.SearchPage;
 import page.classes.NewAssignee;
 
 
-public class NewAssigneeDirectDelivery {
+public class NewAssigneeHoneywellTest {
 	private WebDriver driver;
 	public static Properties prop;
 
@@ -58,12 +56,12 @@ public class NewAssigneeDirectDelivery {
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(source, new File("./Screenshots/DIRECTDELIVERYProfile-Screenshots/" + screenshotname + ".png"));
+			FileUtils.copyFile(source, new File("./Screenshots/HONEYWELLProfile-Screenshots/" + screenshotname + ".png"));
 		} catch (Exception e) {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
 	}
-	
+
 	
 	  public boolean isAlertPresent() {
 			 try {
@@ -108,6 +106,7 @@ public class NewAssigneeDirectDelivery {
 				driver = new InternetExplorerDriver();
 			
 			}  		
+			
 			driver.manage().window().maximize();
 			// driver.manage().deleteAllCookies();
 //			    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
@@ -116,26 +115,28 @@ public class NewAssigneeDirectDelivery {
 			Thread.sleep(1000);
 			LoginPage.userid(driver).clear();
 			LoginPage.passwd(driver).clear();
-//			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		//	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		}
-	  
 	  
 	  
 		@Test	
 	 public void test() throws Exception {	
 			initialization();
+
 			LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
 			LoginPage.userid(driver).sendKeys(Keys.TAB);
 			LoginPage.passwd(driver).clear();
 			LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
 			LoginPage.passwd(driver).sendKeys(Keys.TAB);
 			LoginPage.loginbutton(driver).click();
-		 WebDriverWait wait = new WebDriverWait(driver,2);
-		  Thread.sleep(35000);
-				driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);  
+
+			WebDriverWait wait = new WebDriverWait(driver, 3);
+			Thread.sleep(20000);
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
-		takeScreenshot(driver,"1.Homepage");	  
+	    takeScreenshot(driver,"1.Homepage");	
 	    SearchPage.AsgneFldrClick(driver); 
 	    Thread.sleep(3000);
 	    driver.manage().timeouts().implicitlyWait(2,TimeUnit.SECONDS);
@@ -160,7 +161,7 @@ public class NewAssigneeDirectDelivery {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			       NewAssignee.orgname(driver).sendKeys("DD Genentech, Inc. c/o SIRVA US (DE)");
+			       NewAssignee.orgname(driver).sendKeys("Honeywell - ACS");
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			       driver.switchTo().parentFrame();
 			       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("svc_select_btns"));
@@ -172,7 +173,7 @@ public class NewAssigneeDirectDelivery {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1"));
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         driver.switchTo().frame(driver.findElement(By.xpath("//frame[contains(@name,'work_bottom')]")));
-			       NewAssignee.OrgresultDDClick(driver);
+			       NewAssignee.OrgresultHONClick(driver);
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			       driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
@@ -182,7 +183,7 @@ public class NewAssigneeDirectDelivery {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
 			       NewAssignee.programdropdown(driver).selectByIndex(1);
 			       Thread.sleep(1000);
-			       takeScreenshot(driver,"2.DD New Assignee Profile");
+			       takeScreenshot(driver,"2.Honeywell New Assignee Profile");
 			       NewAssignee.NextButtonClick(driver);
 			       Thread.sleep(2000);
 			       driver.switchTo().parentFrame();
@@ -191,32 +192,94 @@ public class NewAssigneeDirectDelivery {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			         takeScreenshot(driver,"3.DD New Assignee Profile");
 			    
+			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+			       driver.switchTo().parentFrame();
+			       driver.switchTo().parentFrame();
+			       driver.switchTo().parentFrame();
+			       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
+			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
+			         takeScreenshot(driver,"3.Honeywell New Assignee Profile");
 		
-		  driver.manage().timeouts().implicitlyWait(7,TimeUnit.SECONDS);
-		  driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
-		  driver.switchTo().parentFrame();
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
-		 
-
-		  NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
+			         NewAssignee.employeeid(driver).sendKeys("1234567");
+			         NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
+			         NewAssignee.relostatus(driver).selectByIndex(1);
+			         NewAssignee.RC(driver).selectByIndex(1);
+			         NewAssignee.MC(driver).selectByIndex(1);
+			         NewAssignee.opsmgr(driver).selectByIndex(1);
+			         Thread.sleep(1500);
+			         NewAssignee.AssigneetypeHONClick(driver);
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame(); 
+					  driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
+					  NewAssignee.AsgneSel1Click(driver);
+					  NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+			         
+		
+		  NewAssignee.custminame(driver).sendKeys("middle");
+		  NewAssignee.custsalutation(driver).selectByVisibleText("Mr.");
+		  NewAssignee.custsuffix(driver).selectByIndex(2);
+		  NewAssignee.custprefsalutation(driver).selectByIndex(3);
+		  NewAssignee.custpreffname(driver).sendKeys("kaan");
+		  NewAssignee.custprefminame(driver).sendKeys("prefmi");
+		  NewAssignee.custpreflname(driver).sendKeys("test");
+		  NewAssignee.custprefsalutation(driver).selectByIndex(2);
+		  NewAssignee.custprefsuffix(driver).selectByIndex(3);
 		  
-		  NewAssignee.custreferuid(driver) .selectByIndex(2);
-		//  NewAssignee.othercontact(driver).sendKeys("other contact");
+		/*
+		 * NewAssignee.maritalstatus(driver).selectByVisibleText("Married");
+		 * NewAssignee.citizenshipcountry(driver).selectByVisibleText("United States");
+		 * 
+		 * NewAssignee.dualcitizenshipcountry(driver).selectByVisibleText("Germany");
+		 * NewAssignee.custpassportnbr(driver).sendKeys("258465");
+		 * NewAssignee.custpassportnbr(driver).sendKeys(Keys.ESCAPE);
+		 * NewAssignee.pasprtissuedate(driver).sendKeys("1/1/2015");
+		 * NewAssignee.pasprtissuedate(driver).sendKeys(Keys.ESCAPE);
+		 * NewAssignee.pasprtexpiredate(driver).sendKeys("1/1/2020");
+		 * NewAssignee.pasprtexpiredate(driver).sendKeys(Keys.ESCAPE);
+		 * NewAssignee.visatype(driver).sendKeys("visa type");
+		 * NewAssignee.visastatus(driver).sendKeys("visa stat");
+		 * NewAssignee.visaissuedate(driver).sendKeys("1/1/2019");
+		 * NewAssignee.visaissuedate(driver).sendKeys(Keys.ESCAPE); Thread.sleep(1500);
+		 * NewAssignee.visaexpdateHON(driver).sendKeys("1/15/2021");
+		 * NewAssignee.visaexpdateHON(driver).sendKeys(Keys.ESCAPE);
+		 * 
+		 * NewAssignee.CustLanguagesClick(driver); driver.switchTo().parentFrame();
+		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
+		 * "did_dmode_frame_1"));
+		 * waitForElementToBeVisible(driver,NewAssignee.English(driver),3);
+		 * NewAssignee.LanguageEnglishClick(driver); NewAssignee.OKClick(driver);
+		 * driver.switchTo().parentFrame();
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
+		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		 * Thread.sleep(2000);
+		 * 
+		 * NewAssignee.birthdate(driver).sendKeys("7/15/1976");
+		 * NewAssignee.birthdate(driver).sendKeys(Keys.ESCAPE);
+		 * NewAssignee.birthcountry(driver).selectByVisibleText("United States");
+		 * NewAssignee.birthstate(driver).selectByVisibleText("Illinois");
+		 * NewAssignee.birthcity(driver).sendKeys("Chicago");
+		 * NewAssignee.familysizeonasgnmt(driver).sendKeys("4");
+		 * NewAssignee.familysize(driver).sendKeys("5");
+		 */
+		  
 		  NewAssignee.custemail(driver).sendKeys("test@sirva.com");
 		  NewAssignee.pfdcm(driver).selectByVisibleText("Email");
 		//  NewAssignee.cust2email(driver).sendKeys("test2@sirva.com");
+		  
 		  NewAssignee.phnetype1dropdown(driver).selectByIndex(1);
 		  NewAssignee.phne1country(driver).sendKeys("+1");
 		  NewAssignee.phne1areacode(driver).sendKeys("312");
 		  NewAssignee.phne1nbr(driver).sendKeys("4567890");
-		  NewAssignee.phnetype2dropdown(driver).selectByIndex(2);
-		  Thread.sleep(1000);
-		  takeScreenshot(driver,"4.DD New Assignee Profile");
 		/*
+		 * NewAssignee.phnetype2dropdown(driver).selectByIndex(2);
 		 * NewAssignee.phne2country(driver).sendKeys("+44");
 		 * NewAssignee.phne2areacode(driver).sendKeys("55");
 		 * NewAssignee.phne2nbr(driver).sendKeys("123456789");
@@ -229,74 +292,7 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.phne4areacode(driver).sendKeys("3");
 		 * NewAssignee.phne4nbr(driver).sendKeys("56709342");
 		 */
-		  
-		  
-		  NewAssignee.custminame(driver).sendKeys("middle");
-		  NewAssignee.custsalutation(driver).selectByVisibleText("Mr.");
-		  NewAssignee.custsuffix(driver).selectByIndex(2);
-		  NewAssignee.custprefsalutation(driver).selectByIndex(3);
-		  NewAssignee.custpreffname(driver).sendKeys("kaan");
-		  NewAssignee.custprefminame(driver).sendKeys("prefmi");
-		  NewAssignee.custpreflname(driver).sendKeys("test");
-		  NewAssignee.custprefsalutation(driver).selectByIndex(2);
-		  NewAssignee.custprefsuffix(driver).selectByIndex(3);
-		  
-		  Thread.sleep(1000);
-		  takeScreenshot(driver,"5.DD New Assignee Profile");
-		  
-		 
-		/*
-		 * NewAssignee.custssn(driver).sendKeys("123456789");
-		 * NewAssignee.custpassportnbr(driver).sendKeys("258465");
-		 * NewAssignee.custpassportnbr(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.pasprtissuedate(driver).sendKeys("1/1/2015");
-		 * NewAssignee.pasprtissuedate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.pasprtexpiredate(driver).sendKeys("1/1/2020");
-		 * NewAssignee.pasprtexpiredate(driver).sendKeys(Keys.ESCAPE);
-		 */
-
-		 
-		  
-		/*
-		 * NewAssignee.citizenshipcountry(driver).selectByVisibleText("United States");
-		 * NewAssignee.dualcitizenshipcountry(driver).selectByVisibleText("Germany");
-		 * 
-		 * 
-		 * NewAssignee.maritalstatus(driver).selectByVisibleText("Married");
-		 * NewAssignee.birthdate(driver).sendKeys("7/15/1976");
-		 * NewAssignee.birthdate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.birthcountry(driver).selectByVisibleText("United States");
-		 * NewAssignee.birthstate(driver).selectByVisibleText("Illinois");
-		 * NewAssignee.birthcity(driver).sendKeys("Chicago");
-		 * 
-		 * 
-		 * NewAssignee.familysizeonasgnmt(driver).sendKeys("4");
-		 * NewAssignee.familysize(driver).sendKeys("5");
-		 * NewAssignee.accompdependents(driver).sendKeys("2");
-		 * NewAssignee.SplitfamilyN(driver);
-		 * NewAssignee.visatype(driver).sendKeys("visa type");
-		 * NewAssignee.visastatus(driver).sendKeys("visa stat");
-		 * NewAssignee.visaissuedate(driver).sendKeys("1/1/2019");
-		 * NewAssignee.visaissuedate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.visaexpiredate(driver).sendKeys("1/15/2021");
-		 * NewAssignee.visaexpiredate(driver).sendKeys(Keys.ESCAPE);
-		 */
-		 
-		/*
-		 * NewAssignee.CustLanguagesClick(driver); driver.switchTo().parentFrame();
-		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
-		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
-		 * "did_dmode_frame_1"));
-		 * waitForElementToBeVisible(driver,NewAssignee.English(driver),3);
-		 * NewAssignee.LanguageEnglishClick(driver); NewAssignee.OKClick(driver);
-		 * driver.switchTo().parentFrame();
-		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
-		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
-		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
-		 * Thread.sleep(2000);
-		 */
-		 
-		  
+		//  NewAssignee.newtitle(driver).sendKeys("New Title");
 		  NewAssignee.asgmtbegindate(driver).sendKeys("1/1/2019");
 		  NewAssignee.asgmtbegindate(driver).sendKeys(Keys.ESCAPE);
 		  NewAssignee.asgmtenddate(driver).sendKeys("1/1/2020");
@@ -311,46 +307,29 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.actualenddate(driver).sendKeys("5/15/2021");
 		 * NewAssignee.actualenddate(driver).sendKeys(Keys.ESCAPE);
 		 */
+		  NewAssignee.custreferuid(driver) .selectByIndex(2);
 		 
-		 
-
+		  NewAssignee.SBU(driver).selectByIndex(1);
+		  NewAssignee.SBE(driver).selectByIndex(1);
+		  NewAssignee.hyperioncode(driver).selectByIndex(1);
 		  NewAssignee.curasgmtcountry(driver).selectByVisibleText("United States");
 			 NewAssignee.curcity(driver).sendKeys("Chicago");
 			  NewAssignee.newasgmtcountry(driver).selectByVisibleText("United States");
 			  NewAssignee.newcity(driver).sendKeys("Boston");
 			  
-		  NewAssignee.custaddr1(driver).sendKeys("321 test ave");
-		  NewAssignee.custaddr2(driver).sendKeys("addr2 test");
-		  NewAssignee.custprefcity(driver).sendKeys("Chicago");
-		  NewAssignee.zip(driver).sendKeys("60601"); 
-		/*
-		 * NewAssignee.newtitle(driver).sendKeys("new title");
-		 * NewAssignee.employeeid(driver).sendKeys("112233");
-		 */
-		  Thread.sleep(1000);
-		  takeScreenshot(driver,"6.DD New Assignee Profile");
-		  
-		  
-		/*
-		 * NewAssignee.newmanager(driver).sendKeys("Sam Adams");
-		 * NewAssignee.newmanageremail(driver).sendKeys("sam@sirva.com");
-		 * 
-		 * NewAssignee.joboffertype(driver).selectByIndex(1);
-		 * NewAssignee.joboffracceptedY(driver);
-		 * NewAssignee.jobofferaccepteddate(driver).sendKeys("2/15/2019");
-		 * NewAssignee.jobofferaccepteddate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.execofficer(driver).selectByVisibleText("No");
-		 * NewAssignee.divisionlevel(driver).selectByIndex(1);
-		 * NewAssignee.newcostcenter(driver).sendKeys("432123");
-		 * NewAssignee.grade(driver).selectByIndex(1);
-		 * NewAssignee.auditcode(driver).sendKeys("audtcode");
-		 * NewAssignee.hiredate(driver).sendKeys("3/15/2015");
-		 * NewAssignee.hiredate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.hirestatus(driver).selectByVisibleText("Transfer");
-		 * NewAssignee.hirecountry(driver).selectByVisibleText("United States");
-		 */
+			  
+			  NewAssignee.custaddr1(driver).sendKeys("321 test ave");
+			  NewAssignee.custaddr2(driver).sendKeys("addr2 test");
+			  NewAssignee.custprefcity(driver).sendKeys("Chicago");
+			  NewAssignee.zip(driver).sendKeys("60601"); 
+			  takeScreenshot(driver,"4.Honeywell New Assignee Profile");
+			  
+
+		//	  NewAssignee.specialneeds(driver).sendKeys("Special Needs");
 		
-		  
+	
+			  
+
 		/*
 		 * NewAssignee.DependentaccompYES(driver);
 		 * NewAssignee.dependentrelation(driver).selectByVisibleText("Spouse");
@@ -365,6 +344,8 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.dependentpreflname(driver).sendKeys("preflast");
 		 * NewAssignee.dependentprefsuffix(driver).selectByVisibleText("V");
 		 * 
+		 * 
+		 * 
 		 * NewAssignee.dependentphonetype1(driver).selectByVisibleText("Other");
 		 * NewAssignee.dependentphone1country(driver).sendKeys("1");
 		 * NewAssignee.dependentphone1areacode(driver).sendKeys("657");
@@ -373,49 +354,29 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.dependentphone2country(driver).sendKeys("1");
 		 * NewAssignee.dependentphone2areacode(driver).sendKeys("657");
 		 * NewAssignee.dependentphone2nbr(driver).sendKeys("35674125");
-		 */
-		  
-		  
-		  
-		/*
-		 * NewAssignee.dependentssn(driver).sendKeys("1230456");
-		 * NewAssignee.dependentpassptnbr(driver).sendKeys("5487960");
-		 * NewAssignee.dependentpassptissuedate(driver).sendKeys("6/1/2018");
-		 * NewAssignee.dependentpassptissuedate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.dependentpassptexpiredate(driver).sendKeys("7/1/2023");
-		 * NewAssignee.dependentpassptexpiredate(driver).sendKeys(Keys.ESCAPE);
 		 * 
+		 * 
+		 * 
+		 * NewAssignee.dependentbirthdate(driver).sendKeys("3/21/1985");
+		 * NewAssignee.dependentbirthdate(driver).sendKeys(Keys.ESCAPE);
+		 * NewAssignee.dependentemail(driver).sendKeys("dep1@sirva.com");
 		 * NewAssignee.dependentcitizenship(driver).selectByVisibleText("United States"
 		 * );
 		 * NewAssignee.dependentdualcitizenship(driver).selectByVisibleText("Germany");
 		 * NewAssignee.dependentgender(driver).selectByVisibleText("Female");
-		 * NewAssignee.dependentbirthdate(driver).sendKeys("3/21/1985");
-		 * NewAssignee.dependentbirthdate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.dependentbirthcountry(driver).selectByVisibleText("United States"
-		 * ); NewAssignee.dependentemail(driver).sendKeys("dep1@sirva.com");
-		 */
-		 
-		
-		/*
-		 * NewAssignee.DependentfulltimestudentNO(driver);
-		 * NewAssignee.dependentoccup(driver).sendKeys("dep occup");
-		 * NewAssignee.DependentLanguagesClick(driver); driver.switchTo().parentFrame();
+		 * Thread.sleep(1500); NewAssignee.DependentLanguagesClick(driver);
 		 * driver.switchTo().parentFrame(); driver.switchTo().parentFrame();
+		 * driver.switchTo().parentFrame();
 		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(
 		 * "did_dmode_frame_1")); NewAssignee.LanguageGermanClick(driver);
 		 * NewAssignee.OKClick(driver); driver.switchTo().parentFrame();
 		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")
 		 * ); wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
 		 * wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
-		 * NewAssignee.dependentlocated(driver).selectByIndex(1);
-		 * NewAssignee.dependentfrom(driver).sendKeys("1/1/2000");
-		 * NewAssignee.dependentfrom(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.dependenttill(driver).sendKeys("1/15/2020");
-		 * NewAssignee.dependenttill(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.dependentneeds(driver).sendKeys("dependent needs");
-		 */
-	         
-		/*
+		 * 
+		 * NewAssignee.depspecialneedsHON(driver).sendKeys("Dependent special needs");
+		 * 
+		 * 
 		 * NewAssignee.PetsaccompYES(driver);
 		 * NewAssignee.petnbr(driver).selectByVisibleText("2");
 		 * NewAssignee.pettypes(driver).sendKeys("dogs, cat, bird");
@@ -425,39 +386,32 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.homesalary(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,Keys.
 		 * END),"245000");
 		 * NewAssignee.homesalarycurrency(driver).selectByVisibleText("US Dollar");
-		 * NewAssignee.perdiemmoney(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,
-		 * Keys.END),"3500"); NewAssignee.perdiemcurrency(driver).selectByIndex(1);
-		 * NewAssignee.overallbudget(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,
-		 * Keys.END),"35000.00");
-		 * NewAssignee.overallbudgetcurrency(driver).selectByIndex(2);
+		 * NewAssignee.miscallowance(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,
+		 * Keys.END),"7500.00");
+		 * NewAssignee.miscallowancecurrency(driver).selectByIndex(5);
 		 * NewAssignee.housingallowance(driver).sendKeys(Keys.HOME,
 		 * Keys.chord(Keys.SHIFT,Keys.END),"10000.00");
 		 * NewAssignee.housingallowancecurrency(driver).selectByIndex(3);
 		 * NewAssignee.utilityallowance(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT
 		 * ,Keys.END),"8000.00");
 		 * NewAssignee.utilityallowancecurrency(driver).selectByIndex(4);
-		 * NewAssignee.miscallowance(driver).sendKeys(Keys.HOME,Keys.chord(Keys.SHIFT,
-		 * Keys.END),"7500.00");
-		 * NewAssignee.miscallowancecurrency(driver).selectByIndex(5);
-		 * NewAssignee.homeownerorselling(driver).selectByIndex(2);
+		 * 
 		 * NewAssignee.arrivalinhostcountrydate(driver).sendKeys("3/1/2019");
 		 * NewAssignee.arrivalinhostcountrydate(driver).sendKeys(Keys.ESCAPE);
 		 * NewAssignee.permhousingmoveindate(driver).sendKeys("3/15/2019");
 		 * NewAssignee.permhousingmoveindate(driver).sendKeys(Keys.ESCAPE);
 		 * NewAssignee.permhousingmoveoutdate(driver).sendKeys("9/15/2020");
 		 * NewAssignee.permhousingmoveoutdate(driver).sendKeys(Keys.ESCAPE);
-		 * NewAssignee.specialneeds(driver).sendKeys("Special Needs");
-		 * NewAssignee.specialneeds(driver).sendKeys("Special Needs");
 		 */
-		  
-      
-	   	 NewAssignee.gac(driver).selectByVisibleText("Perk, Kaan");
-		//  NewAssignee.previousgac(driver).selectByIndex(1);
+
+			
+		        
+		 NewAssignee.gac(driver).selectByVisibleText("Perk, Kaan");
+	//	  NewAssignee.previousgac(driver).selectByIndex(1);
 		  NewAssignee.centerofexcellence(driver).selectByIndex(1);
-		  Thread.sleep(1000);
-		  takeScreenshot(driver,"7.DD New Assignee Profile");
-		  
+	      NewAssignee.custauthdate(driver).sendKeys("11/1/2019");
 		/*
+		 * NewAssignee.custauthdate(driver).sendKeys(Keys.ESCAPE);
 		 * NewAssignee.initialcontactdate(driver).sendKeys("10/15/2019");
 		 * NewAssignee.initialcontactdate(driver).sendKeys(Keys.ESCAPE);
 		 * NewAssignee.initialcontacttime(driver).sendKeys("8:45");
@@ -465,7 +419,13 @@ public class NewAssigneeDirectDelivery {
 		 * NewAssignee.initiationcalldate(driver).sendKeys(Keys.ESCAPE);
 		 */
 		
+		  NewAssignee.wtid(driver).sendKeys("222333");
 		
+		  NewAssignee.surveydate(driver).sendKeys("12/15/2019");
+		  NewAssignee.surveydate(driver).sendKeys(Keys.ESCAPE);
+		  
+		 
+
 		  driver.switchTo().parentFrame(); 
 		  driver.switchTo().parentFrame();
 		  driver.switchTo().parentFrame();
@@ -496,9 +456,9 @@ public class NewAssigneeDirectDelivery {
 	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
 	   		  Thread.sleep(8000);
 	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Employee Types')]")));
+	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'javascript:popup_custom_SIRVA')]")));
 	   		Thread.sleep(1500);
-	   		takeScreenshot(driver,"8.DD Profile Completed");
+	   	 takeScreenshot(driver,"5.Honeywell Profile Completed");
 		  } else {
 			     driver.switchTo().defaultContent();
 	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
@@ -513,68 +473,47 @@ public class NewAssigneeDirectDelivery {
 	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
 	   		  Thread.sleep(8000);
 	   		driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Employee Types')]")));
+	   		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'javascript:popup_custom_SIRVA')]")));
 	   		Thread.sleep(1500);
-	   		takeScreenshot(driver,"8.DD Profile Completed");
-		  }
-         Thread.sleep(300);
-		  driver.switchTo().defaultContent();
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-          Thread.sleep(10000);
-          
-          
-          
-          driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-          WebElement element =  driver.findElement(By.xpath("//input[@name='dt_new_assignment_begin']"));
-	         Actions actions = new Actions(driver);
-	         actions.moveToElement(element);
-	         actions.perform();
-	         takeScreenshot(driver,"9.DD Profile Completed");
-	         Thread.sleep(1500);
-		  		
+	   		takeScreenshot(driver,"5.Honeywell Profile Completed");
+		  }  
+		   Thread.sleep(1500);
+		   driver.switchTo().defaultContent(); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
 	         
-	         driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
-	          WebElement element2 =   driver.findElement(By.xpath("//input[@name='txtHostCitySearch']"));
-		         Actions actions2 = new Actions(driver);
-		         actions2.moveToElement(element2);
-		         actions2.perform();
-		         takeScreenshot(driver,"10.DD Profile Completed");
+		   driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+	          WebElement element =    driver.findElement(By.xpath("//input[@name='dt_new_assignment_begin']"));
+		         Actions actions = new Actions(driver);
+		         actions.moveToElement(element);
+		         actions.perform();
+		         takeScreenshot(driver,"6.Honeywell Profile Completed");
 		         Thread.sleep(1500);
-	         
-	        
-	         
-	         
-	         WebElement    element3 =   driver.findElement((By.xpath("//textarea[@name = 'cust_oth_special_needs_1']")));
-	         Actions actions3 = new Actions(driver);
-	         actions3.moveToElement(element3);
-	         actions3.perform();
-	         takeScreenshot(driver,"11.DD Profile Completed");
-	         Thread.sleep(1500);
-	         
-	         
-	         WebElement    element4 =     driver.findElement(By.xpath("//textarea[@name='special_needs']"));
-	         Actions actions4 = new Actions(driver);
-	         actions4.moveToElement(element4);
-	         actions4.perform();
-	         takeScreenshot(driver,"12.DD Profile Completed");
-	         Thread.sleep(1500);
+		   
+		         
+		          WebElement element2 =    	   driver.findElement(By.xpath("//input[@name='cust_address1_1']"));
+			         Actions actions2 = new Actions(driver);
+			         actions2.moveToElement(element2);
+			         actions2.perform();
+			         takeScreenshot(driver,"7.Honeywell Profile Completed");
+			         Thread.sleep(1500);
+		   
+			         WebElement element3 =    	  driver.findElement(By.xpath("//input[@name='cust_authorized_date']"));
+			         Actions actions3 = new Actions(driver);
+			         actions3.moveToElement(element3);
+			         actions3.perform();
+			         takeScreenshot(driver,"8.Honeywell Profile Completed");
+			         Thread.sleep(1500);
+		   
 
-	         
-	         WebElement    element5 =    driver.findElement(By.xpath("//input[@name='cust_authorized_date']"));
-	         Actions actions5 = new Actions(driver);
-	         actions5.moveToElement(element5);
-	         actions5.perform();
-	         takeScreenshot(driver,"13.DD Profile Completed");
-	         Thread.sleep(1500);
-	         
+	     
 	     
 				  
 }					  
- 
+  
 			     
-			     @AfterMethod
+		           @AfterMethod
 			     public void teardown() throws Exception{
 			    	// driver.quit(); 
 			     }

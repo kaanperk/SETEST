@@ -1,13 +1,19 @@
-package tests;
+package tests.AssigneeProfileSIRVACONNECT;
+
+
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -15,8 +21,11 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import page.classes.LoginPage;
@@ -24,9 +33,9 @@ import page.classes.SearchPage;
 import page.classes.NewAssignee;
 
 
-public class NewAssigneeSAP {
+public class AssigneeProfileMETLIFESIRVACONNECT {
 	private WebDriver driver;
-	private String baseUrl;
+	public static Properties prop;
 
 	public static WebElement waitForElementToBeVisible(WebDriver driver, WebElement webElement, int seconds) {
 		WebDriverWait wait = new WebDriverWait(driver, seconds);
@@ -48,53 +57,91 @@ public class NewAssigneeSAP {
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(source, new File("./Screenshots/SAP-PROFILE-Screenshots/" + screenshotname + ".png"));
+			FileUtils.copyFile(source, new File("./Screenshots/SIRVACONNECT-METLIFE/" + screenshotname + ".png"));
 		} catch (Exception e) {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
 	}
-
-	@Before
-	public void setup() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
-		driver = new ChromeDriver();
-		baseUrl = "https://setstgen.sirvarelocation.com";
-		driver.manage().window().maximize();
+	public boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} // try
+		catch (Exception e) {
+			return false;
+		} // catch
 	}
-	
-	
-	  public boolean isAlertPresent() {
-			 try {
-			 driver.switchTo().alert();
-			 return true;
-			 }// try
-			 catch (Exception e) {
-			 return false;
-			 }// catch
-			 }
+
+	public void initialization() throws InterruptedException {
+		try {
+			prop = new Properties();
+			FileInputStream ip=new FileInputStream("/Users/avl7353/eclipse-workspace/Automation/src/page/classes/config.properties");
+
+			prop.load(ip);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String browsername = prop.getProperty("browser");
+		if (browsername.contentEquals("chrome")) {
+			// System.setProperty("webdriver.chrome.driver","C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
+			
+			System.setProperty("webdriver.chrome.driver",
+					prop.getProperty("chromedriverpath"));
+
+			driver = new ChromeDriver();
+		} else if (browsername.contentEquals("ff")) {
+			System.setProperty("webdriver.gecko.driver", prop.getProperty("firefoxdriverpath"));
+			driver = new FirefoxDriver();
+		} else if (browsername.contentEquals("IE")) {
+		//	System.setProperty("webdriver.ie.driver", "C:\\Users\\avl7353\\eclipse-workspace\\IEDriverServer.exe");
+		//	driver = new InternetExplorerDriver();
+			
+			//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
+			System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
+			driver = new InternetExplorerDriver();
+		
+		}  		
+		
+		driver.manage().window().maximize();
+		// driver.manage().deleteAllCookies();
+//		    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+		// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get(prop.getProperty("url"));
+		Thread.sleep(1000);
+		LoginPage.userid(driver).clear();
+		LoginPage.passwd(driver).clear();
+	//	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
 			
 		@Test	
 	 public void test() throws Exception {	
-		driver.get(baseUrl);
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-		/**LOGIN **/
-		LoginPage.userid(driver).sendKeys("kaan.perk@sirva.com");
-		LoginPage.passwd(driver).sendKeys("Nov321@@");
-		LoginPage.login(driver);
-	    WebDriverWait wait = new WebDriverWait(driver,3);
-	    Thread.sleep(35000);
-		driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
-		/*
-		 * if
-		 * (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
-		 * driver.findElement(By.xpath("//input[@value='OK']")).click(); }
-		 */
+			initialization();
+
+			LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
+			LoginPage.userid(driver).sendKeys(Keys.TAB);
+			LoginPage.passwd(driver).clear();
+			LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
+			LoginPage.passwd(driver).sendKeys(Keys.TAB);
+			LoginPage.loginbutton(driver).click();
+
+			WebDriverWait wait = new WebDriverWait(driver, 3);
+			Thread.sleep(20000);
+			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+			
+			  if
+			  (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
+			  driver.findElement(By.xpath("//input[@value='OK']")).click(); }
+		 
 		(new WebDriverWait(driver, 2))
 		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='did_appframe']")));
 		(new WebDriverWait(driver, 2))
 	    .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@name='cp_display']")));
-		   takeScreenshot(driver,"1.Homepage");	
+		
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
 	    SearchPage.AsgneFldrClick(driver); 
 	    Thread.sleep(3000);
@@ -120,7 +167,7 @@ public class NewAssigneeSAP {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			       NewAssignee.orgname(driver).sendKeys("SAP Africa");
+			       NewAssignee.orgname(driver).sendKeys("Metlife");
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			       driver.switchTo().parentFrame();
 			       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("svc_select_btns"));
@@ -132,7 +179,7 @@ public class NewAssigneeSAP {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1"));
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         driver.switchTo().frame(driver.findElement(By.xpath("//frame[contains(@name,'work_bottom')]")));
-			       NewAssignee.OrgresultSAPClick(driver);
+			       NewAssignee.OrgresultMetlifeClick(driver);
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			       driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
@@ -140,24 +187,24 @@ public class NewAssigneeSAP {
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			       NewAssignee.programdropdown(driver).selectByIndex(3);
+			       NewAssignee.programdropdown(driver).selectByIndex(1);
 			       Thread.sleep(2500);
-			       takeScreenshot(driver,"2.SAP New Assignee");	    
+			       
 			       NewAssignee.NextButtonClick(driver);
 			       driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
 			         driver.switchTo().parentFrame();
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 	       
+			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
+			       
 			       driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 			       driver.switchTo().parentFrame();
 			       driver.switchTo().parentFrame();
 			       driver.switchTo().parentFrame();
 			       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-			         takeScreenshot(driver,"3.SAP New Assignee");	 
+			         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 	
 		
 		/*
 		 * NewAssignee.AsgneTypeClick(driver); driver.switchTo().parentFrame();
@@ -176,6 +223,11 @@ public class NewAssigneeSAP {
 		  
 		  
 		  NewAssignee.asgmttypeselect(driver).selectByVisibleText("Long Term");
+		  NewAssignee.countryfrom(driver).selectByIndex(1);
+		  NewAssignee.countryto(driver).selectByIndex(2);
+		  
+		  
+		  
 		/* NewAssignee.assignedpolicy(driver).sendKeys("Assigned Policy Test"); */
 		 
 		/*
@@ -183,12 +235,12 @@ public class NewAssigneeSAP {
 		 * NewAssignee.custsalutation(driver).selectByVisibleText("Mr.");
 		 * NewAssignee.custsuffix(driver).selectByIndex(2);
 		 */
-		  NewAssignee.custprefsalutation(driver).selectByIndex(3);
+		//  NewAssignee.custprefsalutation(driver).selectByIndex(3);
 		  NewAssignee.custpreffname(driver).sendKeys("kaan");
-		  NewAssignee.custprefminame(driver).sendKeys("prefmi");
+	//	  NewAssignee.custprefminame(driver).sendKeys("prefmi");
 		  NewAssignee.custpreflname(driver).sendKeys("test");
-		  NewAssignee.custprefsalutation(driver).selectByIndex(2);
-		  NewAssignee.custprefsuffix(driver).selectByIndex(3);
+	//	  NewAssignee.custprefsalutation(driver).selectByIndex(2);
+	//	  NewAssignee.custprefsuffix(driver).selectByIndex(3);
 		  NewAssignee.phnetype1dropdown(driver).selectByIndex(1);
 		  NewAssignee.phne1country(driver).sendKeys("+1");
 		  NewAssignee.phne1areacode(driver).sendKeys("312");
@@ -210,6 +262,12 @@ public class NewAssigneeSAP {
 		 * NewAssignee.phne4nbr(driver).sendKeys("56709342");
 		 */
 		  NewAssignee.custemail(driver).sendKeys("test@sirva.com");
+		  Thread.sleep(1000);
+		  
+		  
+		  
+		  
+		  
 		  
 		/*
 		 * NewAssignee.pfdcm(driver).selectByVisibleText("Email");
@@ -277,7 +335,7 @@ public class NewAssigneeSAP {
 		  NewAssignee.custprefcity(driver).sendKeys("Chicago");
 		  NewAssignee.zip(driver).sendKeys("60601"); 
 		  Thread.sleep(2500);
-		    takeScreenshot(driver,"4.SAP New Assignee");	 	 
+		 	 
 		  
 		 // NewAssignee.custtitle(driver).sendKeys("old title");
 		
@@ -317,8 +375,10 @@ public class NewAssigneeSAP {
 		  NewAssignee.asgmtbegindate(driver).sendKeys(Keys.ESCAPE);
 		  NewAssignee.asgmtenddate(driver).sendKeys("1/1/2020");
 		  NewAssignee.asgmtenddate(driver).sendKeys(Keys.ESCAPE);
-		  NewAssignee.dtextstartdate(driver).sendKeys("5/1/2020");
-		  NewAssignee.dtextstartdate(driver).sendKeys(Keys.ESCAPE);
+		/*
+		 * NewAssignee.dtextstartdate(driver).sendKeys("5/1/2020");
+		 * NewAssignee.dtextstartdate(driver).sendKeys(Keys.ESCAPE);
+		 */
 		  
 		/*
 		 * NewAssignee.dtextstartdate(driver).sendKeys(Keys.ESCAPE);
@@ -334,12 +394,13 @@ public class NewAssigneeSAP {
 		  NewAssignee.newasgmtcountry(driver).selectByVisibleText("United States");
 		  NewAssignee.newcity(driver).sendKeys("Boston");
 		  NewAssignee.custzip2(driver).sendKeys("NA");
+		  Thread.sleep(1000);
+		 
 		//  NewAssignee.newwrksitelocation(driver).sendKeys("newwrksite");
 		
 		//  NewAssignee.divisionlevel(driver).selectByIndex(1);
 		 // NewAssignee.extid(driver).sendKeys("ext123");
-		  Thread.sleep(2500);
-		   takeScreenshot(driver,"5.SAP New Assignee");	 
+		
 		/*
 		 * NewAssignee.newcostcenter(driver).sendKeys("432123");
 		 * NewAssignee.newcostcenter2(driver).sendKeys("5555555");
@@ -517,8 +578,19 @@ public class NewAssigneeSAP {
 		 NewAssignee.gac(driver).selectByVisibleText("Perk, Kaan");
 		//  NewAssignee.previousgac(driver).selectByIndex(1);
 		  NewAssignee.centerofexcellence(driver).selectByIndex(1);
+		  
+			 Select s = new Select(driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']")));
+			 List<WebElement> dd_options= s.getOptions();
+			 int i =1;
+			 System.out.println("Generic Profile");
+			 for (WebElement e:dd_options) {
+				 System.out.println(i+ " - "+e.getText());
+				 i++;
+			 }
+			 System.out.println("");
+			 
 		  Thread.sleep(2500);
-		  takeScreenshot(driver,"6.SAP New Assignee");	 	
+		  	
 		/*
 		 * NewAssignee.initialcontactdate(driver).sendKeys("10/15/2019");
 		 * NewAssignee.initialcontactdate(driver).sendKeys(Keys.ESCAPE);
@@ -543,98 +615,274 @@ public class NewAssigneeSAP {
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
 		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
 		  NewAssignee.SaveClick(driver);
-		  Thread.sleep(2000);
+
+		  
 		  if (isAlertPresent()) {
-		  driver.switchTo().alert().accept(); 
-		  driver.switchTo().parentFrame(); 
-		  driver.switchTo().parentFrame();
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
-		  Thread.sleep(2000);
-		  driver.switchTo().parentFrame(); 
-		  driver.switchTo().parentFrame();
-		  driver.switchTo().parentFrame(); 
-		  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-		  Thread.sleep(8000);
-		  (new WebDriverWait(driver, 2))
-		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-		  Thread.sleep(3000);
-		  takeScreenshot(driver,"7.SAP Profile Completed");	 
-		  } else {
-			     driver.switchTo().defaultContent();
-	        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
-	        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
-	   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
-	   		  Thread.sleep(8000);
-	   		  (new WebDriverWait(driver, 2))
-	   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
-	   		  Thread.sleep(3000);
-	   		takeScreenshot(driver,"7.SAP Profile Completed");	
-		  }
+			  driver.switchTo().alert().accept(); 
+			  driver.switchTo().parentFrame(); 
+			  driver.switchTo().parentFrame();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+			  Thread.sleep(2000);
+			  driver.switchTo().parentFrame(); 
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame(); 
+			  driver.findElement(By.xpath("//input[@value='Yes']")).click(); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+			  Thread.sleep(2000);
+			  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			  (new WebDriverWait(driver, 3))
+			  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+			  } 
+			  else {
+				     driver.switchTo().defaultContent();
+		        	 driver.findElement(By.xpath("//input[@value='Yes']")).click();
+		        	  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		   	       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
+		   		  Thread.sleep(2000);
+		   		  (new WebDriverWait(driver, 3))
+		   		  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
+			  }
+			    
 		  driver.switchTo().defaultContent();
-		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work")); 
-	         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top")); 
-          
-	         WebElement element =   driver.findElement(By.xpath("//a[contains(.,'Languages Spoken')][1]"));
-	         Actions actions = new Actions(driver);
-	         actions.moveToElement(element);
-	         actions.perform();
-	         takeScreenshot(driver,"8.SAP Profile Completed");	
-	         Thread.sleep(1500);
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+		  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+		  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(.,'Assignee Types')]")));
 		  
-	         WebElement  element1 =     driver.findElement(By.xpath("//input[@name='dt_offer_acceptance_date']"));
-	         Actions actions1 = new Actions(driver);
-	         actions1.moveToElement(element1);
-	         actions1.perform();
-	         takeScreenshot(driver,"9.SAP Profile Completed");	
-		     Thread.sleep(1500);
-		 
-	         WebElement    element2 =     driver.findElement(By.xpath("//textarea[@name='special_needs']"));
-	         Actions actions2 = new Actions(driver);
-	         actions2.moveToElement(element2);
-	         actions2.perform();
-	         takeScreenshot(driver,"10.SAP Profile Completed");
-	         Thread.sleep(1500);
-
-
-	         WebElement    element3 =   driver.findElement((By.xpath("//textarea[@name = 'cust_oth_special_needs_1']")));
-	         Actions actions3 = new Actions(driver);
-	         actions3.moveToElement(element3);
-	         actions3.perform();
-	         takeScreenshot(driver,"11.SAP Profile Completed");
-	         Thread.sleep(1500);
-	         
-	         WebElement    element4 =    driver.findElement(By.xpath("//input[@name='cust_authorized_date']"));
-	         Actions actions4 = new Actions(driver);
-	         actions4.moveToElement(element4);
-	         actions4.perform();
-	         takeScreenshot(driver,"12.SAP Profile Completed");
-	         Thread.sleep(1500);
-	         
-	         WebElement    element5 =     driver.findElement(By.xpath("//input[@name='cust_box_number']"));
-	         Actions actions5 = new Actions(driver);
-	         actions5.moveToElement(element5);
-	         actions5.perform();
-	         takeScreenshot(driver,"13.SAP Profile Completed");
-	         Thread.sleep(1500);
-	       
-	         
-	         
-	         
-		}
+		  takeScreenshot(driver,"1. METLIFE Profile Completed");
 		  
-	   
-			
-
-				@After
-			     public void teardown() throws Exception{
-			    	// driver.quit(); 
-			     }
-				
-			}
+		  
+			  driver.switchTo().defaultContent();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
 			 
-		
-	
+			  WebElement element7 = driver.findElement(By.xpath("//select[@id='ddlb_Authorizefor']"));
+			  Actions actions7 = new Actions(driver); 
+			  actions7.moveToElement(element7);
+			  actions7.perform(); 
+
+			  NewAssignee.authorizefor(driver).selectByIndex(3);
+			  
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+			  NewAssignee.SaveClick(driver); 
+			  Thread.sleep(2000);
+			  
+			  Alert alert = driver.switchTo().alert();
+			  alert.accept();
+			  	    
+			  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			  
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame();
+			  driver.switchTo().parentFrame();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+			  
+			  WebElement element8 = driver.findElement(By.xpath("//a[contains(.,'Employee Portal Info')]"));
+			  Actions actions8 = new Actions(driver); 
+			  actions8.moveToElement(element8);
+			  actions8.perform(); 
+			  
+			  Thread.sleep(1000);
+			  takeScreenshot(driver,"2. Authorize For selected");
+			  Thread.sleep(1500);
+			  
+			  
+			  NewAssignee.EmployeePortalClick(driver);
+			  Thread.sleep(2000);
+			  takeScreenshot(driver,"3. Employee Portal Info");
+			  Thread.sleep(2000);
+			  driver.switchTo().defaultContent();
+			  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
+			 
+			  System.out.println("AFTER SIRVA Connect Employee Portal AUTHORIZED");
+		      System.out.println(driver.findElement(By.xpath("//*[@id=\"form1\"]/div/table[1]/tbody/tr/td")).getText());
+			  
+			// Get all the table row elements from the table 
+			  List<WebElement> allRows = driver.findElements(By.xpath("//*[@id=\"form1\"]/div/table[2]/tbody/tr")); 
+
+			  // And iterate over them and get all the cells 
+			  for (WebElement row : allRows) { 
+			      List<WebElement> cells = row.findElements(By.tagName("td")); 
+
+			      // Print the contents of each cell
+			      for (WebElement cell : cells) {         
+
+			      System.out.println(cell.getText());
+			      }
+			    }
+			  
+			  Thread.sleep(2000);
+			  driver.switchTo().defaultContent();
+			  driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+				(new WebDriverWait(driver, 2))
+				  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='did_modbox_title_1']")));
+	           NewAssignee.DmodcloseClick(driver);   
+
+			    Thread.sleep(1500);
+			    
+			    driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+			    
+			    NewAssignee.authorizefor(driver).selectByIndex(2);
+			    driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+				  
+				  NewAssignee.SaveClick(driver); 
+				  Thread.sleep(1000);  
+				  
+				  alert.accept();
+				  Thread.sleep(1500);
+				  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+				  
+				  driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  driver.switchTo().parentFrame();
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+				  WebElement element9 = driver.findElement(By.xpath("//a[contains(.,'Employee Portal Info')]"));
+				  Actions actions9 = new Actions(driver); 
+				  actions9.moveToElement(element9);
+				  actions9.perform(); 
+				  takeScreenshot(driver,"4. Authorize For selected2");
+			  
+				  
+				   driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+				  
+				  NewAssignee.EmployeePortalClick(driver);
+				  Thread.sleep(2000);
+				  takeScreenshot(driver,"5. Employee Portal Info2");
+				  Thread.sleep(1000);
+				  driver.switchTo().defaultContent();
+				  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
+				 
+				  System.out.println("AFTER IMOVE Portal AUTHORIZED");
+			      System.out.println(driver.findElement(By.xpath("//*[@id=\"form1\"]/div/table[1]/tbody/tr/td")).getText());
+				  
+				// Get all the table row elements from the table 
+				  List<WebElement> allRows2 = driver.findElements(By.xpath("//*[@id=\"form1\"]/div/table[2]/tbody/tr")); 
+
+				  // And iterate over them and get all the cells 
+				  for (WebElement row : allRows2) { 
+				      List<WebElement> cells = row.findElements(By.tagName("td")); 
+
+				      // Print the contents of each cell
+				      for (WebElement cell : cells) {         
+
+				      System.out.println(cell.getText());
+				     
+				  }
+				      
+				  }
+				  
+				  Thread.sleep(2000);
+				  driver.switchTo().defaultContent();
+				  driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
+					(new WebDriverWait(driver, 2))
+					  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='did_modbox_title_1']")));
+		           NewAssignee.DmodcloseClick(driver);   
+
+				    Thread.sleep(1500);
+				    
+				    driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+				    
+				    NewAssignee.authorizefor(driver).selectByIndex(1);
+				    driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myBar"));
+					  
+					  NewAssignee.SaveClick(driver); 
+					  Thread.sleep(1500);  
+					  
+					  alert.accept();
+					  Thread.sleep(1500);
+					  driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+					  
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  driver.switchTo().parentFrame();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+					  
+					  WebElement element10 = driver.findElement(By.xpath("//a[contains(.,'Employee Portal Info')]"));
+					  Actions actions10 = new Actions(driver); 
+					  actions10.moveToElement(element10);
+					  actions10.perform(); 
+					  takeScreenshot(driver,"6. Authorize For selected3");
+				  
+					  
+					   driver.switchTo().parentFrame();
+						  driver.switchTo().parentFrame();
+						  driver.switchTo().parentFrame();
+						  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe")); 
+						  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work"));
+						  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("work_top"));
+					  
+					  NewAssignee.EmployeePortalClick(driver);
+					  Thread.sleep(2000);
+					  takeScreenshot(driver,"7. Employee Portal Info3");
+					  Thread.sleep(1000);
+					  driver.switchTo().defaultContent();
+					  wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_dmode_frame_1")); 
+					 
+					  System.out.println("AFTER IMOVE Portal + LUMPSUM AUTHORIZED");
+				      System.out.println(driver.findElement(By.xpath("//*[@id=\"form1\"]/div/table[1]/tbody/tr/td")).getText());
+					  
+					// Get all the table row elements from the table 
+					  List<WebElement> allRows3 = driver.findElements(By.xpath("//*[@id=\"form1\"]/div/table[2]/tbody/tr")); 
+
+					  // And iterate over them and get all the cells 
+					  for (WebElement row : allRows3) { 
+					      List<WebElement> cells = row.findElements(By.tagName("td")); 
+
+					      // Print the contents of each cell
+					      for (WebElement cell : cells) {         
+
+					      System.out.println(cell.getText());
+					     
+					  }
+					      
+					  }
+				  
+				  
+		         
+			}
+			  
+		   
+				
+
+					@After
+				     public void teardown() throws Exception{
+				  //  driver.quit(); 
+				     }
+					
+				}

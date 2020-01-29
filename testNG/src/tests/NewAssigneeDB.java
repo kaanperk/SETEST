@@ -1,12 +1,19 @@
 package tests;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+
+
+
+
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -14,6 +21,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,7 +35,7 @@ import page.classes.NewAssignee;
 
 public class NewAssigneeDB {
 	private WebDriver driver;
-	private String baseUrl;
+	public static Properties prop;
 
 	public static WebElement waitForElementToBeVisible(WebDriver driver, WebElement webElement, int seconds) {
 		WebDriverWait wait = new WebDriverWait(driver, seconds);
@@ -53,15 +62,6 @@ public class NewAssigneeDB {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
 	}
-
-	@Before
-	public void setup() throws Exception {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
-		driver = new ChromeDriver();
-		baseUrl = "https://setstgen.sirvarelocation.com";
-		driver.manage().window().maximize();
-	}
-	
 	
 	  public boolean isAlertPresent() {
 			 try {
@@ -73,16 +73,63 @@ public class NewAssigneeDB {
 			 }// catch
 			 }
 			
+	  public void initialization() throws InterruptedException {
+			try {
+				prop = new Properties();
+				FileInputStream ip=new FileInputStream("/Users/avl7353/eclipse-workspace/Automation/src/page/classes/config.properties");
+				
+
+				prop.load(ip);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			String browsername = prop.getProperty("browser");
+			if (browsername.contentEquals("chrome")) {
+				// System.setProperty("webdriver.chrome.driver","C:\\Users\\avl7353\\eclipse-workspace\\chromedriver.exe");
+				
+				System.setProperty("webdriver.chrome.driver",
+						prop.getProperty("chromedriverpath"));
+
+				driver = new ChromeDriver();
+			} else if (browsername.contentEquals("ff")) {
+				System.setProperty("webdriver.gecko.driver", prop.getProperty("firefoxdriverpath"));
+				driver = new FirefoxDriver();
+			} else if (browsername.contentEquals("IE")) {
+			//	System.setProperty("webdriver.ie.driver", "C:\\Users\\avl7353\\eclipse-workspace\\IEDriverServer.exe");
+			//	driver = new InternetExplorerDriver();
+				
+				//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
+				System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
+				driver = new InternetExplorerDriver();
+			
+			}  		
+			driver.manage().window().maximize();
+			// driver.manage().deleteAllCookies();
+//			    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+			// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.get(prop.getProperty("url"));
+			Thread.sleep(1000);
+			LoginPage.userid(driver).clear();
+			LoginPage.passwd(driver).clear();
+//			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		}
+	  
+	  
 		@Test	
 	 public void test() throws Exception {	
-		driver.get(baseUrl);
-		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
-		/**LOGIN **/
-		LoginPage.userid(driver).sendKeys("kaan.perk@sirva.com");
-		LoginPage.passwd(driver).sendKeys("Nov321@@");
-		LoginPage.login(driver);
-	    WebDriverWait wait = new WebDriverWait(driver,3);
-	    driver.manage().timeouts().implicitlyWait(40,TimeUnit.SECONDS);    
+			initialization();
+			LoginPage.userid(driver).sendKeys(prop.getProperty("username"));
+			LoginPage.userid(driver).sendKeys(Keys.TAB);
+			LoginPage.passwd(driver).clear();
+			LoginPage.passwd(driver).sendKeys(prop.getProperty("password"));
+			LoginPage.passwd(driver).sendKeys(Keys.TAB);
+			LoginPage.loginbutton(driver).click();
+		 WebDriverWait wait = new WebDriverWait(driver,2);
+		  Thread.sleep(35000);
+				driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);  
 	    wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("cp_display"));
 	    takeScreenshot(driver,"1. Homepage");	
@@ -287,7 +334,7 @@ public class NewAssigneeDB {
 							  
 		}					  
 			     
-			     @After
+			     @AfterMethod
 			     public void teardown() throws Exception{
 			    	 //driver.quit(); 
 			     }
