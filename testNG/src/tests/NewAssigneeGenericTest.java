@@ -599,7 +599,7 @@ public class NewAssigneeGenericTest {
 		  NewAssignee.secondarypayrollid(driver).sendKeys("777888");
 		  Thread.sleep(1000); takeScreenshot(driver,"10.New Assignee");
 		  
-		  NewAssignee.surveydate(driver).sendKeys("12/15/2019");
+		  NewAssignee.surveydate(driver).sendKeys("12/15/2020");
 		  NewAssignee.surveydate(driver).sendKeys(Keys.ESCAPE);
 		  NewAssignee.archiveboxnbr(driver).sendKeys("1990");
 		  NewAssignee.clientsystemid(driver).sendKeys("55440"); Thread.sleep(1000);
