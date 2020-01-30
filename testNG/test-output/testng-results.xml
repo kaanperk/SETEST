@@ -2,51 +2,43 @@
 <testng-results skipped="0" failed="1" ignored="0" total="1" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="35786" started-at="2020-01-28T18:15:33 CST" finished-at="2020-01-28T18:16:08 CST">
+  <suite name="Default suite" duration-ms="70650" started-at="2020-01-30T09:26:42 CST" finished-at="2020-01-30T09:27:52 CST">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="35786" started-at="2020-01-28T18:15:33 CST" finished-at="2020-01-28T18:16:08 CST">
-      <class name="tests.NewAssigneeHoneywellTest">
-        <test-method status="FAIL" signature="test()[pri:0, instance:tests.NewAssigneeHoneywellTest@6536e911]" name="test" duration-ms="35744" started-at="2020-01-28T18:15:33 CST" finished-at="2020-01-28T18:16:08 CST">
-          <exception class="org.openqa.selenium.WebDriverException">
+    <test name="Default test" duration-ms="70650" started-at="2020-01-30T09:26:42 CST" finished-at="2020-01-30T09:27:52 CST">
+      <class name="tests.NewAssigneeGenericTest">
+        <test-method status="FAIL" signature="test()[pri:0, instance:tests.NewAssigneeGenericTest@6536e911]" name="test" duration-ms="70578" started-at="2020-01-30T09:26:42 CST" finished-at="2020-01-30T09:27:52 CST">
+          <exception class="org.openqa.selenium.UnhandledAlertException">
             <message>
-              <![CDATA[chrome not reachable
-  (Session info: chrome=79.0.3945.130)
+              <![CDATA[unexpected alert open: {Alert text : Warning: The expiration date has already occurred.  Please ensure Employee is working on obtaining passport renewal.  Enter in new dates once issued.}
+  (Session info: chrome=79.0.3945.130): Warning: The expiration date has already occurred.  Please ensure Employee is working on obtaining passport renewal.  Enter in new dates once issued.
 Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:25:48'
-System info: host: 'SIRNB-G18QMH2', ip: '10.22.4.185', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_231'
+System info: host: 'SIRNB-G18QMH2', ip: '10.22.30.29', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_231'
 Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 79.0.3945.130, chrome: {chromedriverVersion: 79.0.3945.36 (3582db32b3389..., userDataDir: C:\Users\avl7353\AppData\Lo...}, goog:chromeOptions: {debuggerAddress: localhost:52177}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
-Session ID: f1fde7ca4317a8eb127894fe73f5a4f5
-*** Element info: {Using=css selector, value=frame[name='did_appframe'],iframe[name='did_appframe']}]]>
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 79.0.3945.130, chrome: {chromedriverVersion: 79.0.3945.36 (3582db32b3389..., userDataDir: C:\Users\avl7353\AppData\Lo...}, goog:chromeOptions: {debuggerAddress: localhost:53371}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 7ce2b543d9b7543d4f2102eda038cd4c
+*** Element info: {Using=xpath, value=//select[@name='citizenship_country']}]]>
             </message>
             <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: chrome not reachable
-  (Session info: chrome=79.0.3945.130)
+              <![CDATA[org.openqa.selenium.UnhandledAlertException: unexpected alert open: {Alert text : Warning: The expiration date has already occurred.  Please ensure Employee is working on obtaining passport renewal.  Enter in new dates once issued.}
+  (Session info: chrome=79.0.3945.130): Warning: The expiration date has already occurred.  Please ensure Employee is working on obtaining passport renewal.  Enter in new dates once issued.
 Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:25:48'
-System info: host: 'SIRNB-G18QMH2', ip: '10.22.4.185', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_231'
+System info: host: 'SIRNB-G18QMH2', ip: '10.22.30.29', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_231'
 Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 79.0.3945.130, chrome: {chromedriverVersion: 79.0.3945.36 (3582db32b3389..., userDataDir: C:\Users\avl7353\AppData\Lo...}, goog:chromeOptions: {debuggerAddress: localhost:52177}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
-Session ID: f1fde7ca4317a8eb127894fe73f5a4f5
-*** Element info: {Using=css selector, value=frame[name='did_appframe'],iframe[name='did_appframe']}
-at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-at java.lang.reflect.Constructor.newInstance(Unknown Source)
-at org.openqa.selenium.remote.http.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:187)
-at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:122)
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 79.0.3945.130, chrome: {chromedriverVersion: 79.0.3945.36 (3582db32b3389..., userDataDir: C:\Users\avl7353\AppData\Lo...}, goog:chromeOptions: {debuggerAddress: localhost:53371}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 7ce2b543d9b7543d4f2102eda038cd4c
+*** Element info: {Using=xpath, value=//select[@name='citizenship_country']}
+at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:120)
 at org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:49)
 at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:158)
 at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)
-at org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:353)
-at org.openqa.selenium.remote.RemoteWebDriver.findElementsByCssSelector(RemoteWebDriver.java:424)
-at org.openqa.selenium.By$ByCssSelector.findElements(By.java:441)
-at org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:311)
-at org.openqa.selenium.remote.RemoteWebDriver$RemoteTargetLocator.frame(RemoteWebDriver.java:878)
-at org.openqa.selenium.support.ui.ExpectedConditions$16.apply(ExpectedConditions.java:476)
-at org.openqa.selenium.support.ui.ExpectedConditions$16.apply(ExpectedConditions.java:472)
-at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:249)
-at tests.NewAssigneeHoneywellTest.test(NewAssigneeHoneywellTest.java:137)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:323)
+at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:428)
+at org.openqa.selenium.By$ByXPath.findElement(By.java:353)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)
+at page.classes.NewAssignee.citizenshipcountry(NewAssignee.java:381)
+at tests.NewAssigneeGenericTest.test(NewAssigneeGenericTest.java:290)
 at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -77,15 +69,15 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 ]]>
             </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
+          </exception> <!-- org.openqa.selenium.UnhandledAlertException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test -->
-        <test-method status="PASS" signature="teardown()[pri:0, instance:tests.NewAssigneeHoneywellTest@6536e911]" name="teardown" is-config="true" duration-ms="0" started-at="2020-01-28T18:16:08 CST" finished-at="2020-01-28T18:16:08 CST">
+        <test-method status="PASS" signature="teardown()[pri:0, instance:tests.NewAssigneeGenericTest@6536e911]" name="teardown" is-config="true" duration-ms="5" started-at="2020-01-30T09:27:52 CST" finished-at="2020-01-30T09:27:52 CST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-      </class> <!-- tests.NewAssigneeHoneywellTest -->
+      </class> <!-- tests.NewAssigneeGenericTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

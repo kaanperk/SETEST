@@ -71,7 +71,7 @@ public class NewAssignee3m{
 		try {
 			TakesScreenshot ts = (TakesScreenshot) driver;
 			File source = ts.getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(source, new File("./Screenshots/GenericProgramCopy/" + screenshotname + ".png"));
+			FileUtils.copyFile(source, new File("./Screenshots/NewAssignee3M/" + screenshotname + ".png"));
 		} catch (Exception e) {
 			System.out.println("Exception during screenshot" + e.getMessage());
 		}
@@ -134,8 +134,8 @@ public class NewAssignee3m{
 			LoginPage.passwd(driver).sendKeys(Keys.TAB);
 			LoginPage.loginbutton(driver).click();
 		 WebDriverWait wait = new WebDriverWait(driver,2);
-		  Thread.sleep(35000);
-				driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+		  Thread.sleep(20000);
+				driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 		/*
 		 * if
 		 * (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
@@ -269,6 +269,7 @@ public class NewAssignee3m{
 				         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("did_appframe"));
 					       wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("summaryButtons"));  	
 						  Thread.sleep(8000);
+						  driver.manage().timeouts().implicitlyWait(3,TimeUnit.SECONDS);
 						  (new WebDriverWait(driver, 3))
 						  .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[@id='did_program_title_1']")));
 						  Thread.sleep(3000);

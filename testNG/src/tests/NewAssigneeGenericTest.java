@@ -4,9 +4,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 
-
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -107,9 +104,21 @@ public class NewAssigneeGenericTest {
 				//USE IE 32 bit driver ---   ISSUES WITH IE 64BIT//
 				System.setProperty("webdriver.ie.driver", prop.getProperty("IEdriverpath"));
 				driver = new InternetExplorerDriver();
+		
+			}
 			
-			}  		
-	  }
+			driver.manage().window().maximize();
+			// driver.manage().deleteAllCookies();
+//			    driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+			// driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.get(prop.getProperty("url"));
+			Thread.sleep(1000);
+			LoginPage.userid(driver).clear();
+			LoginPage.passwd(driver).clear();
+//			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		}
+
+	  
 	  
 			
 		@Test	
@@ -125,7 +134,7 @@ public class NewAssigneeGenericTest {
 
 			WebDriverWait wait = new WebDriverWait(driver, 3);
 			Thread.sleep(20000);
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		/*
 		 * if
 		 * (driver.findElement(By.xpath("//th[@id='did_confirm_title']")).isEnabled()) {
@@ -269,7 +278,7 @@ public class NewAssigneeGenericTest {
 		  NewAssignee.custpassportnbr(driver).sendKeys(Keys.ESCAPE);
 		  NewAssignee.pasprtissuedate(driver).sendKeys("1/1/2015");
 		  NewAssignee.pasprtissuedate(driver).sendKeys(Keys.ESCAPE);
-		  NewAssignee.pasprtexpiredate(driver).sendKeys("1/1/2020");
+		  NewAssignee.pasprtexpiredate(driver).sendKeys("11/1/2022");
 		  NewAssignee.pasprtexpiredate(driver).sendKeys(Keys.ESCAPE);
 		  Thread.sleep(1000);
 		  NewAssignee.ChkgrencardholdY(driver);
@@ -781,7 +790,7 @@ public class NewAssigneeGenericTest {
 
 				@AfterMethod
 			     public void teardown() throws Exception{
-			    driver.quit(); 
+			   // driver.quit(); 
 			     }
 				
 			}
