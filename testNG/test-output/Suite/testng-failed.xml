@@ -1,22 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]" parallel="classes">
-  <test thread-count="5" name="Test(failed)" parallel="classes">
+<suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="TestTESTNG(failed)">
     <classes>
-      <class name="tests.AddFeeTest">
+      <class name="tests.NewAssigneeGenericTest">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeGenericTest -->
+      <class name="tests.NewAssigneeSAPTest">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeSAPTest -->
+      <class name="tests.NewAssigneeAmgen">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeAmgen -->
+      <class name="tests.NewAssigneeGenentechTest">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeGenentechTest -->
+      <class name="tests.NewAssigneeHoneywellTest">
         <methods>
           <include name="teardown"/>
-          <include name="setup"/>
           <include name="test"/>
         </methods>
-      </class> <!-- tests.AddFeeTest -->
-      <class name="tests.AddPaymentTest">
+      </class> <!-- tests.NewAssigneeHoneywellTest -->
+      <class name="tests.NewAssigneeMetlifeTest">
         <methods>
-          <include name="setup"/>
           <include name="teardown"/>
           <include name="test"/>
         </methods>
-      </class> <!-- tests.AddPaymentTest -->
+      </class> <!-- tests.NewAssigneeMetlifeTest -->
+      <class name="tests.NewAssignee3m">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssignee3m -->
+      <class name="tests.NewAssigneeDirectDelivery">
+        <methods>
+          <include name="teardown"/>
+          <include name="test"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeDirectDelivery -->
+      <class name="tests.NewAssigneeBKC">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeBKC -->
+      <class name="tests.NewAssigneeManuLife">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeManuLife -->
+      <class name="tests.NewAssigneeApple">
+        <methods>
+          <include name="test"/>
+          <include name="teardown"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeApple -->
+      <class name="tests.NewAssigneeDB">
+        <methods>
+          <include name="teardown"/>
+          <include name="test"/>
+        </methods>
+      </class> <!-- tests.NewAssigneeDB -->
     </classes>
-  </test> <!-- Test(failed) -->
+  </test> <!-- TestTESTNG(failed) -->
 </suite> <!-- Failed suite [Suite] -->

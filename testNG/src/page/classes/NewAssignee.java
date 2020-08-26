@@ -1658,6 +1658,30 @@ public class NewAssignee {
 		   element.click();
 	}
 	 
+	 
+	  
+		 public static Select asgmtstatus(WebDriver driver){
+			 Select element = null; 
+			 WebElement element_dropdown =  driver.findElement((By.xpath("//select[@name='SIRVAAssignmentStatus']")));
+		      element=new Select (element_dropdown);
+			  return element;  
+		 }
+	 
+		 public static WebElement irs50mileY(WebDriver driver){
+			  element =    driver.findElement(By.xpath("//input[@name='radio_IRS_50mile'and @value='Y']"));
+			  return element;
+			  
+			  
+		  }		 			
+				 
+		 public static void IRS50MILEY(WebDriver driver){
+			 element = irs50mileY(driver);
+			   waitForElementToBeClickable(driver,element,3);
+			   element.click();
+		  }		
+	 
+	 
+	 
 	//**3M PROFILE**//
 	 public static WebElement custhomecompany(WebDriver driver){
 		 element =    driver.findElement(By.xpath("//input[@name='cust_Host_Company_Name']"));
@@ -2001,9 +2025,45 @@ public static WebElement depspecialneedsHON(WebDriver driver){
 			element.click(); 
 			} 	   
 		
+
+	/**ManuLife**/
+			
+			public static WebElement orgresultManuLife(WebDriver driver){ 
+				element  = driver.findElement(By.xpath("(//a[contains(.,'Manulife (0001)')])[4]"));
+				return element; 
+				}
+				
+				public static void OrgresultManuLifeClick(WebDriver driver) { 
+				element =   orgresultManuLife(driver); 
+				waitForElementToBeClickable(driver,element,3);
+				element.click(); 
+				} 	   
+				
+	/**Ancestry.com	**/	
+				public static WebElement orgresultAnestry(WebDriver driver){ 
+					element  = driver.findElement(By.xpath("//a[contains(.,'Ancestry.com')]"));
+					return element; 
+					}
+					
+					public static void OrgresultAncestryClick(WebDriver driver) { 
+					element =   orgresultAnestry(driver); 
+					waitForElementToBeClickable(driver,element,3);
+					element.click(); 
+					} 	   			
 		
-		
-		
-		
-	
+					
+	/**Federated Mutual Insurance Company**/
+					public static WebElement orgresultFED(WebDriver driver){ 
+					element  = driver.findElement(By.xpath("//a[contains(.,'Federated Mutual')]"));
+					return element; 
+									}
+									
+					public static void OrgresultFEDClick(WebDriver driver) { 
+					element =   orgresultFED(driver); 
+					waitForElementToBeClickable(driver,element,3);
+					element.click(); 
+									} 	   			
+						
+						
+				
 }

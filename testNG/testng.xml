@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="classes">
-  <test thread-count="5" name="Test" parallel="classes">
+<suite name="Suite">
+  <test thread-count="5" name="TestTESTNG">
     <classes>
-      <class name="tests.AddFeeTest"/>
-       <class name="tests.AddPaymentTest"/>
+  <!--  <class name="tests.NewAssigneeDirectDelivery"/>
+  <class name="tests.NewAssigneeManuLife"/>
+      <class name="tests.NewAssigneeApple"/>
+      <class name="tests.NewAssigneeHoneywellTest"/>
+      <class name="tests.AssigneeDocuments"/>
+      <class name="tests.AssigneDetailReport3M"/>
+      <class name="tests.AssigneeNotes"/>
+      <class name="tests.NewAssigneeDB"/>
+      <class name="tests.NewAssigneeSAPTest"/>
+      <class name="tests.NewAssignee3m"/>
+      <class name="tests.GENERICAssigneeProgramCopy"/> -->
+      
+      
+      <class name="tests.NewAssigneeManuLIFEwDependents"/>
+      
+      
+      
+      
+      
+     <!--  <class name="tests.NewAssigneeGenentechTest"/>
+      <class name="tests.NewAssigneeAmgen"/>
+      <class name="tests.AddFee"/>
+      <class name="tests.NewAssigneeManuLIFEwDependents"/>
+      <class name="tests.AddPayment"/>
+      <class name="tests.NewAssigneeBKC"/>
+      <class name=".NewTest"/>
+      <class name="tests.ClientAddInvoice"/>
+      <class name="tests.ExtAsgneServiceAssignCrossCult"/>
+      <class name="tests.NewAssigneeMetlifeTest"/> -->
     </classes>
-  </test> <!-- Test -->
+  </test> <!-- TestTESTNG -->
 </suite> <!-- Suite -->

@@ -221,8 +221,6 @@ public class AddFee {
 	         
 	}
       
-
-	@AfterMethod
 	public void teardown() throws Exception {
 		 driver.quit();
 	}

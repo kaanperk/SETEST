@@ -31,6 +31,43 @@ public class ExistingAssignee {
 		   waitForElementToBeClickable(driver,element,3);
 		   element.click();
 	  }
+	 
+
+	 public static WebElement programcontrol(WebDriver driver){
+		  element = driver.findElement(By.xpath("//*[contains(text(),'Program Control')]"));  
+		  return element;
+	  }
+	  
+	 public static void ProgramControlClick(WebDriver driver){
+		  element = programcontrol(driver);
+		   waitForElementToBeClickable(driver,element,3);
+		   element.click();
+	  }
+	 
+	 
+	 public static WebElement addnewservice(WebDriver driver){
+		  element = driver.findElement(By.xpath("//a[@href='javascript:add_adhoc_service();'][contains(.,'Add New Service')]")); 
+		  return element;
+	  }
+	  
+	 public static void AddNewServiceClick(WebDriver driver){
+		  element = addnewservice(driver);
+		   waitForElementToBeClickable(driver,element,3);
+		   element.click();
+	  }
+	 
+	 
+	 
+	 public static Select NewServiceSelect(WebDriver driver){
+		  Select element = null;
+		  WebElement element_dropdown = driver.findElement(By.xpath("//select[@name='workflow_template_uid']"));
+		    element = new Select(element_dropdown);  
+	        return element;     
+	  }
+	 
+
+	 
+	
 	
 	 public static WebElement payments(WebDriver driver){
 		  element = driver.findElement(By.xpath("//*[contains(text(),'Payments')]")); 
@@ -169,6 +206,18 @@ public class ExistingAssignee {
 		  return element;
 	  }
 	 
+
+	 public static WebElement AncilliaryService(WebDriver driver){
+		  element = driver.findElement(By.xpath("//*[contains(text(),'Ancillary')]")); 
+		  return element;
+	  }
+	 
+	 
+	 public static WebElement AIGService(WebDriver driver){
+		  element = driver.findElement(By.xpath("//*[contains(text(),'AIG Services')]")); 
+		  return element;
+	  }
+	 
 	 public static WebElement CrossCultUnassigned(WebDriver driver){
 		 element = driver.findElement(By.xpath("//nobr[contains(.,'New Initiation (unassigned)')]"));
 		  return element;
@@ -194,6 +243,18 @@ public class ExistingAssignee {
 		   element.click();
 	}	 
 	   
+
+	 public static WebElement HomeSearchService(WebDriver driver){
+		  element = driver.findElement(By.xpath("//*[contains(text(),'Home Search')]")); 
+		  return element;
+	  }
+	 
+		 
+	 public static WebElement SettlingService(WebDriver driver){
+		  element = driver.findElement(By.xpath("//*[contains(text(),'Settling-In Assistance')]")); 
+		  return element;
+	  }
+	 
 	 
 	 
 	 public static WebElement AppleTaxService(WebDriver driver){
@@ -241,6 +302,26 @@ public class ExistingAssignee {
 		  element = driver.findElement(By.xpath("//span[contains(.,'Departure Service')]"));
 		  return element;
 	  }
+	
+	
+	public static WebElement ServiceControl(WebDriver driver){
+		  element = driver.findElement(By.xpath("//nobr[contains(.,'Service Control')]"));
+		  return element;
+	  }
+	
+	 
+	
+	
+	 public static WebElement ServiceMoreOptions(WebDriver driver) {
+		 element = driver.findElement(By.xpath("//nobr[contains(.,'More Options')]"));
+		 return element;
+	}	 
+	 
+	 public static WebElement StartAnotherService(WebDriver driver) {
+		 element = driver.findElement(By.xpath("//nobr[contains(.,'Start Another Service')]"));
+		 return element;
+	}	 
+		
 	
 	
 	public static WebElement ExpMgmtService(WebDriver driver){
@@ -397,6 +478,98 @@ public class ExistingAssignee {
 	
    
 	 
+		public static WebElement notes(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//span[@id='did_notes']")));
+			  return element;
+		  }	
+		
+	 
+	 public static void NotesClick(WebDriver driver) {
+		   element = notes(driver);
+		   waitForElementToBeClickable(driver,element,3);
+		   element.click();
+	}
+	 
+	 
+		public static WebElement addnotes(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//button[contains(.,'+ Add Note')]")));
+			  return element;
+		  }	
+		
+	 
+	 public static void AddNotesClick(WebDriver driver) {
+		   element = addnotes(driver);
+		   waitForElementToBeClickable(driver,element,3);
+		   element.click();
+	}
+	 
+		
+		public static WebElement notesubject(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//input[@formcontrolname='subject']")));
+			  return element;
+		  }	
+	 
+	 
+		public static WebElement noteCritical(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//input[@formcontrolname='isCritical']")));
+			  return element;
+		  }	
+	 
+		
+
+		public static WebElement notePrivate(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//input[@formcontrolname='isPrivate']")));
+			  return element;
+		  }	
+	 
+
+		public static Select notetype(WebDriver driver){
+			  Select element = null;
+			  WebElement element_dropdown =  driver.findElement(By.xpath("//select[@class='form-control']"));
+			    element = new Select(element_dropdown);  
+		        return element;     
+		  }
+		;
+		
+		public static WebElement notebody(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//textarea[@name='body']")));
+			  return element;
+		  }	
+		
+		public static WebElement notesave(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//button[contains(.,'Save')]")));
+			  return element;
+		  }	
+		
+		public static WebElement noteclose(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//button[contains(.,'Close')]")));
+			  return element;
+		  }	
+		
+		public static WebElement noteexit(WebDriver driver){
+			  element =  driver.findElement((By.xpath("//div[@onclick='task_gadget_hide();'][contains(.,'x')]")));
+			  return element;
+		  }	
+		
+		
+		 
+		 public static WebElement documents(WebDriver driver){
+			  element = driver.findElement(By.xpath("//*[contains(text(),'Documents')]")); 
+			  return element;
+		  }
+		 
+		 public static void DocumentsClick(WebDriver driver){
+			  element = documents(driver);
+			   waitForElementToBeClickable(driver,element,3);
+			   element.click();
+		  }
+		
+		
+		 
+		 
+		 
+		
+		
 	
 	 
 }

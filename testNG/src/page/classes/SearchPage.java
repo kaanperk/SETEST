@@ -81,6 +81,14 @@ public class SearchPage {
 	   element.click();
 }
   
+  public static  WebElement programname(WebDriver driver) {
+	  element =  driver.findElement(By.xpath("//input[contains(@name,'program_name')]"));
+      return element;
+}
+  
+    
+  
+  
   public static void SearchClick(WebDriver driver) {
 	   element = searchbutton(driver);
 	   element.click();
